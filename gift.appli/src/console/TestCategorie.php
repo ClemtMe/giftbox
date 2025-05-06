@@ -1,10 +1,15 @@
 <?php
-namespace app\src\console;
+namespace gift\appli\console;
+
+
 use gift\appli\models\Categorie;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-try {
-    $s = Categorie::all();
-    print ($s);
-}catch (ModelNotFoundException $e){
-    print $e->getMessage();
+use gift\appli\utils\Eloquent;
+require_once '../vendor/autoload.php';
+Eloquent::init('../conf/gift.db.conf.ini.dist');
+
+$list_res = Categorie::get();
+
+foreach ($list_res as $res) {
+    printf($res->libelle . "\n");
 }
+?>
