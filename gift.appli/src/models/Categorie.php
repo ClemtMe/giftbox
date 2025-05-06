@@ -7,7 +7,7 @@ class Categorie extends Model{
     public $timestamps = false;
 
     public function Prestation(): \Illuminate\Database\Eloquent\Relations\HasMany{
-        return $this->hasMany(Prestation::class, 'id_categorie');
+        return $this->hasMany(Prestation::class, 'cat_id');
     }
 }
 
