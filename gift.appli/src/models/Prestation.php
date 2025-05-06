@@ -5,10 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 class Prestation extends Model{
     protected $table = 'prestation';
     protected $primaryKey = 'id';
-    protected $fillable = ['nom', 'description', 'url', 'unit', 'tarif', 'img'];
+    public $incrementing =false;
+    public $keyType = 'string';
+    protected $fillable = ['id', 'libelle', 'description', 'url', 'unite', 'tarif'];
     public $timestamps = false;
 
-    public function Categorie(){
+    public function Categorie(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
         return $this->belongsTo(Categorie::class, 'id_categorie');
     }
 }
