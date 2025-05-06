@@ -12,4 +12,3 @@ $list_res = Categorie::get();
 foreach ($list_res as $res) {
     printf($res->libelle . "\n");
 }
-?>
