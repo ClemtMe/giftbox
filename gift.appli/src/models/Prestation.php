@@ -1,6 +1,7 @@
 <?php
 namespace gift\appli\models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Prestation extends Model{
     protected $table = 'prestation';
@@ -10,7 +11,11 @@ class Prestation extends Model{
     protected $fillable = ['id', 'libelle', 'description', 'url', 'unite', 'tarif'];
     public $timestamps = false;
 
-    public function Categorie(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
-        return $this->belongsTo(Categorie::class, 'id_categorie');
+    public function categorie(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
+        return $this->belongsTo(Categorie::class, 'cat_id');
+    }
+
+    public function coffrets(): BelongsToMany{
+        return $this->belongsToMany(CoffretType::class, 'coffret2presta', 'presta_id', 'coffret_id');
     }
 }
