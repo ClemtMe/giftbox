@@ -2,11 +2,10 @@
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-return function (App $app) {
+return function (Slim\App $app) {
     // Route 1 : Page d'accueil
     $app->get('/', function (Request $request, Response $response) {
         $response->getBody()->write("Bienvenue sur la page d'accueil !");
