@@ -6,10 +6,26 @@ use Slim\Factory\AppFactory;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$app = AppFactory::create();
+return function (App $app) {
+    // Route 1 : Page d'accueil
+    $app->get('/', function (Request $request, Response $response) {
+        $response->getBody()->write("Bienvenue sur la page d'accueil !");
+        return $response;
+    });
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
+    // Route 2 : Hello
+    $app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
+        $name = $args['name'];
+        $response->getBody()->write("Hello, $name");
+        return $response;
+    });
+
+    // Route 3 : Allo
+    $app->get('/allo/{name}', function (Request $request, Response $response, array $args) {
+        $name = $args['name'];
+        $response->getBody()->write("Allo, $name");
+        return $response;
+    });
+
+    return $app;
+};
