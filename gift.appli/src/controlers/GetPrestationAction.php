@@ -1,12 +1,10 @@
 <?php
 namespace gift\appli\controlers;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use gift\appli\models\Prestation;
 
-class getPrestationAction
+class GetPrestationAction
 {
-    public function __invoke(Request $rq, Response $rs, array $args) : Response {
+    public function __invoke($rq, $rs, $args) {
         $id = $args['id'];
         $prestation = Prestation::find($id);
         if ($prestation) {
