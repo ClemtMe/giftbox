@@ -1,5 +1,5 @@
 <?php
-namespace App\Controlers;
+namespace gift\appli\controlers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use gift\appli\models\Prestation;
