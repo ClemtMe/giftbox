@@ -1,35 +1,25 @@
 <?php
 namespace gift\appli\controlers;
-use Psr\Http\Message\ResponseInterface;
 
-
-class GetCategoriesAction{
-    public function __invoke(Request $request, Response $response, array $args): ResponseInterface
+class GetCategoriesAction {
+    public function __invoke($request, $response, array $args)
     {
         // Récupérer les catégories depuis le modèle
         $categories = \gift\appli\models\Categorie::all();
 
-        $html = '<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Categories</title>
-        </head>
-        <body>
+        $html = '
             <h1>Categories</h1>
             <ul>';
 
         foreach ($categories as $categorie) {
-            $html .= '<li><strong>' . htmlspecialchars($categorie->libelle) . '</strong>: '
-                . htmlspecialchars($categorie->description) . '</li>';
+            $html .= '<li><a href="/giftbox/categorie/'.$categorie->id.'">' . htmlspecialchars($categorie->libelle) . '</a></li>';
         }
 
-        $html .= '</ul>
-        </body>
-        </html>';
+        $html .= '</ul>';
 
         // Write the HTML to the response body
         $response->getBody()->write($html);
 
-        return $response->withHeader('Content-Type', 'text/html');
+        return $response;
     }
 }
