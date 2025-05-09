@@ -6,7 +6,7 @@ class Categorie extends Model{
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    public function Prestation(): \Illuminate\Database\Eloquent\Relations\HasMany{
+    public function prestations(): \Illuminate\Database\Eloquent\Relations\HasMany{
         return $this->hasMany(Prestation::class, 'cat_id');
     }
 }

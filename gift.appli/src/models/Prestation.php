@@ -18,4 +18,9 @@ class Prestation extends Model{
     public function coffrets(): BelongsToMany{
         return $this->belongsToMany(CoffretType::class, 'coffret2presta', 'presta_id', 'coffret_id');
     }
+
+    public function boxes(): BelongsToMany{
+        return $this->belongsToMany(Box::class, 'box2presta', 'presta_id', 'box_id')
+                    ->withPivot('quantite');
+    }
 }
