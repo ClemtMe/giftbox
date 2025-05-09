@@ -26,5 +26,7 @@ return function (Slim\App $app) {
         return $response;
     });
 
+    $app->get('/categories', \gift\appli\controlers\GetCategoriesAction::class);
+
     return $app;
 };

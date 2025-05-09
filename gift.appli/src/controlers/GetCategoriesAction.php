@@ -1,25 +1,35 @@
 <?php
+namespace gift\appli\controlers;
 use Psr\Http\Message\ResponseInterface;
 
-class GetCategoriesAction extends AbstractAction{
+
+class GetCategoriesAction{
     public function __invoke(Request $request, Response $response, array $args): ResponseInterface
     {
         // Récupérer les catégories depuis le modèle
         $categories = \gift\appli\models\Categorie::all();
 
-        $html = '';
+        $html = '<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Categories</title>
+        </head>
+        <body>
+            <h1>Categories</h1>
+            <ul>';
 
-        // Convertir les catégories en tableau associatif
-        $categoriesArray = [];
         foreach ($categories as $categorie) {
-            $categoriesArray[] = [
-                'id' => $categorie->id,
-                'libelle' => $categorie->libelle,
-                'description' => $categorie->description,
-            ];
+            $html .= '<li><strong>' . htmlspecialchars($categorie->libelle) . '</strong>: '
+                . htmlspecialchars($categorie->description) . '</li>';
         }
 
-        // Retourner la réponse JSON
-        return $this->json($response, $categoriesArray);
+        $html .= '</ul>
+        </body>
+        </html>';
+
+        // Write the HTML to the response body
+        $response->getBody()->write($html);
+
+        return $response->withHeader('Content-Type', 'text/html');
     }
 }
