@@ -21,7 +21,7 @@ return function (Slim\App $app) {
     $app->get('/categorie[/[{id}[/]]]', GetCategorieAction::class);
 
     // Une préstation selon un ID passé dans la query string
-    $app->get('/prestation/{id}[/]', GetPrestationAction::class);
+    $app->get('/prestation[/[{id}[/]]]', GetPrestationAction::class);
 
     // Les préstations d'une categorie selon un ID
     $app->get('/categorie/{id}/prestations[/]', GetPrestationByCateIdAction::class);
