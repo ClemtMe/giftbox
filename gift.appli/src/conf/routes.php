@@ -3,6 +3,7 @@
 use gift\appli\controlers\GetCategorieAction;
 use gift\appli\controlers\GetCategoriesAction;
 use gift\appli\controlers\GetPrestationAction;
+use gift\appli\controlers\GetPrestationByCateIdAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -21,6 +22,9 @@ return function (Slim\App $app) {
 
     // Une préstation selon un ID passé dans la query string
     $app->get('/prestation/{id}[/]', GetPrestationAction::class);
+
+    // Les préstations d'une categorie selon un ID
+    $app->get('/categorie/{id}/prestations[/]', GetPrestationByCateIdAction::class);
 
     return $app;
 };
