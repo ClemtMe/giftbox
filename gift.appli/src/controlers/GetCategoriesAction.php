@@ -8,16 +8,10 @@ class GetCategoriesAction {
         try {
             $categories = \gift\appli\models\Categorie::all();
             if($categories->isEmpty()){
-                throw new \Exception("Aucune catégories");
+                throw new \Exception("Aucunes catégories trouvées");
             }
         } catch (\Exception $e){
-            $html = <<<HTML
-            <h1>Erreur avec les catégories</h1>
-            <a href="/giftbox/">Page d'accueil</a>
-            HTML;
-
-            $response->getBody()->write($html);
-            return $response->withStatus(500);
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
         $html = '

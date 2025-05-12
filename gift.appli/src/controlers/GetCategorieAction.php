@@ -9,22 +9,15 @@ class GetCategorieAction
         $id = $args['id'] ?? null;
 
         if ($id == null) {
-            return $response->withStatus(400);
+            throw new \Slim\Exception\HttpBadRequestException($request, "Paramètre manquant");
         }
 
         try {
             $categorie = \gift\appli\models\Categorie::findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $html = <<<HTML
-            <h1>Catégorie non trouvée</h1>
-            <p>La catégorie que vous recherchez n'existe pas.</p>
-            <a href="/giftbox/categories">Toutes les catégories</a>
-            HTML;
-
-            $response->getBody()->write($html);
-            return $response->withStatus(400);
+            throw new \Slim\Exception\HttpNotFoundException($request, $e->getMessage());
         } catch (\Exception $e) {
-            return $response->withStatus(500);
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
         $html = <<<HTML
