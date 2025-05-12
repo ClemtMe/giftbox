@@ -20,7 +20,7 @@ return function (Slim\App $app) {
     $app->get('/categorie/{id}[/]', GetCategorieAction::class);
 
     // Une préstation selon un ID passé dans la query string
-    $app->get('/prestation[/]', GetPrestationAction::class);
+    $app->get('/prestation/{id}[/]', GetPrestationAction::class);
 
     return $app;
 };
