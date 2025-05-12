@@ -1,5 +1,6 @@
 <?php
 namespace gift\appli\controlers;
+use Slim\Exception\HttpBadRequestException;
 use gift\appli\models\Prestation;
 
 class GetPrestationAction
