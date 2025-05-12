@@ -11,8 +11,7 @@ class GetPrestationAction
             $rs->getBody()->write(json_encode($prestation));
             return $rs->withHeader('Content-Type', 'application/json');
         } else {
-            $rs->getBody()->write('Prestation not found');
-            return $rs->withStatus(404);
+            throw new HttpBadRequestException($rq, "Prestation not found");
         }
     }
 }   
