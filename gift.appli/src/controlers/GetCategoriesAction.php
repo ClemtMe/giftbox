@@ -15,7 +15,7 @@ class GetCategoriesAction {
         }
 
         $view = \Slim\Views\Twig::fromRequest($request);
-        return $view->render($response, 'ViewCategories.twig', [
+        return $view->render($response, 'pages/ViewCategories.twig', [
             'categories' => $categories
         ]);
     }

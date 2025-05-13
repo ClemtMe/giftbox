@@ -22,6 +22,6 @@ class GetCategorieAction
         }
 
         $view = \Slim\Views\Twig::fromRequest($request);
-        return $view->render($response, 'ViewCategorie.twig', $categorie->toArray());
+        return $view->render($response, 'pages/ViewCategorie.twig', $categorie->toArray());
     }
 }

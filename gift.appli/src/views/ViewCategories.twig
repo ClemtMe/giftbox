@@ -1,8 +1,0 @@
-<h1>Les categories</h1>
-<ul>
-    {% for cat in categories %}
-        <li>
-            <a href="{{ url_for('categorie', {'id': cat.id}) }}">{{ cat.libelle }}</a>
-        </li>
-    {% endfor %}
-</ul>

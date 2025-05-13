@@ -1,0 +1,10 @@
+{% extends 'Base.twig' %}
+
+{% block title %}La Catégorie {{ libelle }}{% endblock %}
+
+{% block content %}
+    <h1>la Categorie {{ id }}</h1>
+    <h2>{{ libelle }}</h2>
+    <h3>{{ description }}</h3>
+    <a href="{{ url_for('prestations_by_categorie', {'id': id}) }}">Prestations</a>
+{% endblock %}
