@@ -3,6 +3,7 @@ namespace gift\appli\controlers;
 use Slim\Exception\HttpBadRequestException;
 use gift\appli\models\Prestation;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Views\Twig;
 
 class GetPrestationAction
 {
@@ -13,8 +14,10 @@ class GetPrestationAction
         }
         $prestation = Prestation::find($id);
         if ($prestation) {
-            $rs->getBody()->write(json_encode($prestation));
-            return $rs->withHeader('Content-Type', 'application/json');
+            $view = Twig::fromRequest($rq);
+            $img = "/images/img" . $prestation->img;
+            return $view->render($rs, 'ViewPrestation.twig', ['nom' => $prestation->libelle, 'description' => $prestation->description,
+                'unite' => $prestation->unite, 'tarif' => $prestation->tarif, 'img' => $img, 'url' => $prestation->url]);
         } else {
             throw new HttpNotFoundException($rq, "Prestation introuvable");
         }
