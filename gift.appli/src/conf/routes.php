@@ -12,19 +12,19 @@ return function (Slim\App $app) {
     $app->get('[/]', function (Request $request, Response $response) {
         $response->getBody()->write("Bienvenue sur la page d'accueil !");
         return $response;
-    });
+    })->setName('home');
 
     // Toutes les catégories
-    $app->get('/categories[/]', GetCategoriesAction::class);
+    $app->get('/categories[/]', GetCategoriesAction::class)->setName('categories');
 
     // Une catégories selon un ID
-    $app->get('/categorie[/[{id}[/]]]', GetCategorieAction::class);
+    $app->get('/categorie[/[{id}[/]]]', GetCategorieAction::class)->setName('categorie');
 
     // Une préstation selon un ID passé dans la query string
-    $app->get('/prestation[/[{id}[/]]]', GetPrestationAction::class);
+    $app->get('/prestation[/[{id}[/]]]', GetPrestationAction::class)->setName('prestation');
 
     // Les préstations d'une categorie selon un ID
-    $app->get('/categorie/{id}/prestations[/]', GetPrestationByCateIdAction::class);
+    $app->get('/categorie/{id}/prestations[/]', GetPrestationByCateIdAction::class)->setName('prestations_by_categorie');
 
     return $app;
 };
