@@ -21,12 +21,7 @@ class GetCategorieAction
             throw new HttpNotFoundException($request, "Catégorie introuvable");
         }
 
-        $html = <<<HTML
-        <h1>Catégorie : {$categorie->libelle}</h1>
-        <p>{$categorie->description}</p>    
-        HTML;
-
-        $response->getBody()->write($html);
-        return $response;
+        $view = \Slim\Views\Twig::fromRequest($request);
+        return $view->render($response, 'ViewCategorie.twig', $categorie->toArray());
     }
 }
