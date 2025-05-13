@@ -14,19 +14,9 @@ class GetCategoriesAction {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
-        $html = '
-            <h1>Categories</h1>
-            <ul>';
-
-        foreach ($categories as $categorie) {
-            $html .= '<li><a href="/giftbox/categorie/'.$categorie->id.'">' . htmlspecialchars($categorie->libelle) . '</a></li>';
-        }
-
-        $html .= '</ul>';
-
-        // Write the HTML to the response body
-        $response->getBody()->write($html);
-
-        return $response;
+        $view = \Slim\Views\Twig::fromRequest($request);
+        return $view->render($response, 'ViewCategories.twig', [
+            'categories' => $categories
+        ]);
     }
 }
