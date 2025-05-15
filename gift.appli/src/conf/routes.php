@@ -3,6 +3,7 @@
 use gift\appli\controlers\GetCategorieAction;
 use gift\appli\controlers\GetCategoriesAction;
 use gift\appli\controlers\GetCoffretsTypeAction;
+use gift\appli\controlers\GetCoffretTypeAction;
 use gift\appli\controlers\GetPrestationAction;
 use gift\appli\controlers\GetPrestationByCateIdAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -28,6 +29,8 @@ return function (Slim\App $app) {
     $app->get('/categorie/{id}/prestations[/]', GetPrestationByCateIdAction::class)->setName('prestations_by_categorie');
 
     $app->get('/coffretsType[/]', GetCoffretsTypeAction::class)->setName('coffrets_type');
+
+    $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
 
     return $app;
 };
