@@ -1,3 +1,8 @@
+{% extends 'Base.twig' %}
+
+{% block title %}La Prestation {{ nom }}{% endblock %}
+
+{% block content %}
 <html>
 <body>
     <h1>Prestation : {{ nom }}</h1>
@@ -8,3 +13,4 @@
     <img src='{{ img }}' alt="{{ img }}">
 </body>
 </html>
+{% endblock %}
