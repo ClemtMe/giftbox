@@ -16,7 +16,7 @@ class GetPrestationAction
         if ($prestation) {
             $view = Twig::fromRequest($rq);
             $img = "/images/img" . $prestation->img;
-            return $view->render($rs, 'ViewPrestation.twig', ['nom' => $prestation->libelle, 'description' => $prestation->description,
+            return $view->render($rs, 'pages/ViewPrestation.twig', ['nom' => $prestation->libelle, 'description' => $prestation->description,
                 'unite' => $prestation->unite, 'tarif' => $prestation->tarif, 'img' => $img, 'url' => $prestation->url]);
         } else {
             throw new HttpNotFoundException($rq, "Prestation introuvable");
