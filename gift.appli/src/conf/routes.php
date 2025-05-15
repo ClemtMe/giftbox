@@ -12,8 +12,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 return function (Slim\App $app) {
     // Page d'accueil
     $app->get('[/]', function (Request $request, Response $response) {
-        $response->getBody()->write("Bienvenue sur la page d'accueil !");
-        return $response;
+        $view = \Slim\Views\Twig::fromRequest($request);
+        return $view->render($response, 'pages/ViewAccueil.twig');
     })->setName('home');
 
     // Toutes les catégories
