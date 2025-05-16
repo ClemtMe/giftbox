@@ -9,6 +9,6 @@
         <p class="text-gray-700"><span class="font-semibold">Composition :</span> {{ unite }}</p>
         <a href="{{ url }}" class="text-blue-600 hover:underline break-words">{{ url }}</a>
         <p class="text-gray-900 font-semibold">Prix : {{ tarif }}€</p>
-        <img src="{{ img }}" alt="{{ nom }}" class="w-full rounded-md object-cover" />
+        <img src="/{{ globals.img_dir }}/{{ img }}" alt="{{ nom }}" class="w-full rounded-md object-cover" />
     </div>
 {% endblock %}
