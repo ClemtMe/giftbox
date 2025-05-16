@@ -1,6 +1,8 @@
 <?php
 namespace gift\appli\controlers;
 
+use Slim\Routing\RouteContext;
+
 class GetPrestationByCoffretIdAction
 {
     public function __invoke($request, $response, array $args)
@@ -24,13 +26,17 @@ class GetPrestationByCoffretIdAction
             throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour la catégorie $coffretType->libelle.");
         }
 
-        $text = "Prestations du coffret : {$coffretType->libelle}\n";
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+
         foreach ($prestations as $prestation) {
-            $text .= "- {$prestation->libelle}: {$prestation->description}\n";
+            $prestation->url = $routeParser->urlFor('prestation', ['id' => $prestation->id]);
         }
 
-        $response->getBody()->write($text);
+        $view = \Slim\Views\Twig::fromRequest($request);
+        return $view->render($response, 'pages/ViewCoffretPrestations.twig', [
+            'prestations' => $prestations,
+            'coffret' => $coffretType,
+        ]);
 
-        return $response->withHeader('Content-Type', 'text/plain');
     }
 }

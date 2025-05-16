@@ -3,11 +3,11 @@
 {% block title %}Les Coffrets Type{% endblock %}
 
 {% block content %}
-    <h1>Les coffrets Type</h1>
-    <ul>
-        {% for cat in coffrets_type %}
-            <li>
-                <a href="{{ url_for('coffrets_type', {'id': cat.id}) }}">{{ cat.libelle }}</a>
+    <h1 class="text-4xl font-bold text-center pb-3">Les coffrets Type</h1>
+    <ul class="text-center">
+        {% for coffret in coffrets_type %}
+            <li class="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100 hover:text-blue-500">
+                <a href="{{ url_for('coffret_type', {'id': coffret.id}) }}">{{ coffret.libelle }}</a>
             </li>
         {% endfor %}
     </ul>

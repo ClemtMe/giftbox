@@ -24,14 +24,17 @@ class GetPrestationByCateIdAction{
         if ($prestations->isEmpty()) {
             throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour la catégorie $categorie->libelle.");
         }
-        $routeContext = RouteContext::fromRequest($request) ;
-        $routeParser = $routeContext->getRouteParser();
-        $url = $routeParser->urlFor('prestation');
+
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+
+        foreach ($prestations as $prestation) {
+            $prestation->url = $routeParser->urlFor('prestation', ['id' => $prestation->id]);
+        }
+
         $view = \Slim\Views\Twig::fromRequest($request);
         return $view->render($response, 'pages/ViewCategoriePrestations.twig', [
             'prestations' => $prestations,
             'categorie' => $categorie,
-            'url' => $url,
         ]);
     }
 }
