@@ -1,6 +1,8 @@
 <?php
 namespace gift\appli\controlers;
 
+use Slim\Routing\RouteContext;
+
 class GetPrestationByCateIdAction{
     public function __invoke($request, $response, array $args)
     {
@@ -22,11 +24,13 @@ class GetPrestationByCateIdAction{
         if ($prestations->isEmpty()) {
             throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour la catégorie $categorie->libelle.");
         }
-
+        $basePath = RouteContext::fromRequest($request)->getBasePath();
+        $url = $basePath . '/prestation/';
         $view = \Slim\Views\Twig::fromRequest($request);
         return $view->render($response, 'pages/ViewCategoriePrestations.twig', [
             'prestations' => $prestations,
             'categorie' => $categorie,
+            'url' => $url,
         ]);
     }
 }
