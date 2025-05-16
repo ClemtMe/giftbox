@@ -24,8 +24,9 @@ class GetPrestationByCateIdAction{
         if ($prestations->isEmpty()) {
             throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour la catégorie $categorie->libelle.");
         }
-        $basePath = RouteContext::fromRequest($request)->getBasePath();
-        $url = $basePath . '/prestation/';
+        $routeContext = RouteContext::fromRequest($request) ;
+        $routeParser = $routeContext->getRouteParser();
+        $url = $routeParser->urlFor('prestation');
         $view = \Slim\Views\Twig::fromRequest($request);
         return $view->render($response, 'pages/ViewCategoriePrestations.twig', [
             'prestations' => $prestations,
