@@ -6,6 +6,7 @@ use gift\appli\controlers\GetCoffretsTypeAction;
 use gift\appli\controlers\GetCoffretTypeAction;
 use gift\appli\controlers\GetPrestationAction;
 use gift\appli\controlers\GetPrestationByCateIdAction;
+use gift\appli\controlers\GetPrestationByCoffretIdAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -31,6 +32,8 @@ return function (Slim\App $app) {
     $app->get('/coffretsType[/]', GetCoffretsTypeAction::class)->setName('coffrets_type');
 
     $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
+
+    $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
 
     return $app;
 };
