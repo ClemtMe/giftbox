@@ -23,7 +23,7 @@ class GetPrestationByCoffretIdAction
 
         $prestations = $coffretType->prestations;
         if ($prestations->isEmpty()) {
-            throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour la catégorie $coffretType->libelle.");
+            throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour le coffret $coffretType->libelle.");
         }
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
