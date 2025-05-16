@@ -3,14 +3,12 @@
 {% block title %}La Prestation {{ nom }}{% endblock %}
 
 {% block content %}
-<html>
-<body>
-    <h1>Prestation : {{ nom }}</h1>
-    <p>Description : {{ description }}</p>
-    <p>Composition : {{ unite }}</p>
-    <a href="{{ url }}">{{ url }}</a>
-    <p>Prix : {{ tarif }}€</p>
-    <img src='{{ img }}' alt="{{ img }}">
-</body>
-</html>
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 space-y-4">
+        <h1 class="text-2xl font-bold text-gray-800">Prestation : {{ nom }}</h1>
+        <p class="text-gray-700"><span class="font-semibold">Description :</span> {{ description }}</p>
+        <p class="text-gray-700"><span class="font-semibold">Composition :</span> {{ unite }}</p>
+        <a href="{{ url }}" class="text-blue-600 hover:underline break-words">{{ url }}</a>
+        <p class="text-gray-900 font-semibold">Prix : {{ tarif }}€</p>
+        <img src="/{{ globals.img_dir }}/{{ img }}" alt="{{ nom }}" class="w-full rounded-md object-cover" />
+    </div>
 {% endblock %}
