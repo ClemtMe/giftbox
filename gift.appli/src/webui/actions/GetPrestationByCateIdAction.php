@@ -1,6 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 
+use gift\appli\application_core\domain\entities\Categorie;
 use Slim\Routing\RouteContext;
 
 class GetPrestationByCateIdAction{
@@ -13,7 +14,7 @@ class GetPrestationByCateIdAction{
         }
 
         try {
-            $categorie = \gift\appli\models\Categorie::findOrFail($id);
+            $categorie = Categorie::findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new \Slim\Exception\HttpNotFoundException($request, $e->getMessage());
         } catch (\Exception $e) {

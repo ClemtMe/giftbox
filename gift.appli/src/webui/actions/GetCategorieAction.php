@@ -2,6 +2,7 @@
 
 namespace gift\appli\webui\actions;
 
+use gift\appli\application_core\domain\entities\Categorie;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
@@ -15,7 +16,7 @@ class GetCategorieAction
             throw new HttpBadRequestException($request, "Paramètre manquant");
         }
 
-        $categorie = \gift\appli\models\Categorie::find($id);
+        $categorie = Categorie::find($id);
 
         if (!$categorie) {
             throw new HttpNotFoundException($request, "Catégorie introuvable");

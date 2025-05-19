@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 use Slim\Exception\HttpBadRequestException;
-use gift\appli\models\Prestation;
+use gift\appli\application_core\domain\entities\Prestation;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
 

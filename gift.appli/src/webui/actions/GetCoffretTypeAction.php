@@ -2,6 +2,7 @@
 
 namespace gift\appli\webui\actions;
 
+use gift\appli\application_core\domain\entities\CoffretType;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
@@ -15,7 +16,7 @@ class GetCoffretTypeAction
             throw new HttpBadRequestException($request, "Paramètre manquant");
         }
 
-        $coffretType = \gift\appli\models\CoffretType::find($id);
+        $coffretType = CoffretType::find($id);
 
         if (!$coffretType) {
             throw new HttpNotFoundException($request, "Coffret introuvable");

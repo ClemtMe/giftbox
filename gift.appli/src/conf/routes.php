@@ -1,12 +1,12 @@
 <?php
 
-use gift\appli\controlers\GetCategorieAction;
-use gift\appli\controlers\GetCategoriesAction;
-use gift\appli\controlers\GetCoffretsTypeAction;
-use gift\appli\controlers\GetCoffretTypeAction;
-use gift\appli\controlers\GetPrestationAction;
-use gift\appli\controlers\GetPrestationByCateIdAction;
-use gift\appli\controlers\GetPrestationByCoffretIdAction;
+use gift\appli\webui\actions\GetCategorieAction;
+use gift\appli\webui\actions\GetCategoriesAction;
+use gift\appli\webui\actions\GetCoffretsTypeAction;
+use gift\appli\webui\actions\GetCoffretTypeAction;
+use gift\appli\webui\actions\GetPrestationAction;
+use gift\appli\webui\actions\GetPrestationByCateIdAction;
+use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

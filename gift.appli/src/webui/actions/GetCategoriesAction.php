@@ -1,12 +1,14 @@
 <?php
 namespace gift\appli\webui\actions;
 
+use gift\appli\application_core\domain\entities\Categorie;
+
 class GetCategoriesAction {
     public function __invoke($request, $response, array $args)
     {
         // Récupérer les catégories depuis le modèle
         try {
-            $categories = \gift\appli\models\Categorie::all();
+            $categories = Categorie::all();
             if($categories->isEmpty()){
                 throw new \Exception("Aucunes catégories trouvées");
             }

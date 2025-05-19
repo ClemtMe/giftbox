@@ -2,7 +2,7 @@
 declare(strict_types=1);
 session_start();
 
-use gift\appli\utils\Eloquent;
+use gift\appli\infrastructure\Eloquent;
 use Slim\Factory\AppFactory;
 
 Eloquent::init(__DIR__ . '/gift.db.conf.ini.dist');
@@ -12,7 +12,7 @@ $app->addRoutingMiddleware(true, false, false);
 $app->addErrorMiddleware(true, false, false);
 $app->setBasePath('/giftbox');
 
-$twig = \Slim\Views\Twig::create(__DIR__ . '/../views', ['cache' => false, 'auto_reload' => true , 'strict_variables' => true]);
+$twig = \Slim\Views\Twig::create(__DIR__ . '/../webui/views', ['cache' => false, 'auto_reload' => true , 'strict_variables' => true]);
 $twig->getEnvironment()
     ->addGlobal('globals', [
         'css_dir'=> 'static/css',
