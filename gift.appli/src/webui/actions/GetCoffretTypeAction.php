@@ -1,6 +1,6 @@
 <?php
 
-namespace gift\appli\controlers;
+namespace gift\appli\webui\actions;
 
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;

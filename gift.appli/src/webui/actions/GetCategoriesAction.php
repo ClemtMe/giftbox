@@ -1,5 +1,5 @@
 <?php
-namespace gift\appli\controlers;
+namespace gift\appli\webui\actions;
 
 class GetCategoriesAction {
     public function __invoke($request, $response, array $args)
