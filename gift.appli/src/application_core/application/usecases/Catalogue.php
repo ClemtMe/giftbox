@@ -1,9 +1,9 @@
 <?php
-namespace gift\appli\application_core\application\usecases;
+namespace gift\appli\core\application\usecases;
 
-use gift\appli\application_core\domain\entities\Categorie;
-use gift\appli\application_core\domain\entities\Prestation;
-use gift\appli\application_core\domain\entities\Theme;
+use gift\appli\core\domain\entities\Categorie;
+use gift\appli\core\domain\entities\Prestation;
+use gift\appli\core\domain\entities\Theme;
 
 class Catalogue implements CatalogueInterface
 {

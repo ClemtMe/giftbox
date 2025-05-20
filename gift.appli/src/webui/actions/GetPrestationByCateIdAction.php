@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 
-use gift\appli\application_core\domain\entities\Categorie;
+use gift\appli\core\domain\entities\Categorie;
 use Slim\Routing\RouteContext;
 
 class GetPrestationByCateIdAction{

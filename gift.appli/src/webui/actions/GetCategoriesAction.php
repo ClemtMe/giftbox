@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 
-use gift\appli\application_core\domain\entities\Categorie;
+use gift\appli\core\domain\entities\Categorie;
 
 class GetCategoriesAction {
     public function __invoke($request, $response, array $args)

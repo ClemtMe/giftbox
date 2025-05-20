@@ -1,5 +1,5 @@
 <?php
-namespace gift\appli\application_core\domain\entities;
+namespace gift\appli\core\domain\entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

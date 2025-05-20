@@ -2,7 +2,7 @@
 
 namespace gift\appli\webui\actions;
 
-use gift\appli\application_core\domain\entities\CoffretType;
+use gift\appli\core\domain\entities\CoffretType;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 

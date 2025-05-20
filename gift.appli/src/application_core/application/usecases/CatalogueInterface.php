@@ -1,5 +1,5 @@
 <?php
-namespace gift\appli\application_core\application\usecases;
+namespace gift\appli\core\application\usecases;
 Interface CatalogueInterface{
     public function getCategories(): array;
     public function getCategorieById(int $id): array;
