@@ -1,5 +1,6 @@
 .idea
 vendor
 composer.lock
+compose.yml
 gift.appli/src/conf/gift.db.conf.ini.dist
 
