@@ -3,4 +3,7 @@ vendor
 composer.lock
 compose.yml
 gift.appli/src/conf/gift.db.conf.ini.dist
-
+build
+.database_env
+docker-compose.yml
+.DS_Store
