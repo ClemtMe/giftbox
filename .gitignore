@@ -1,7 +1,7 @@
 .idea
 vendor
 composer.lock
-compose.yml
+.env
 gift.appli/src/conf/gift.db.conf.ini.dist
 build
 .database_env
