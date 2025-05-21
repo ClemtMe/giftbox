@@ -1,11 +1,23 @@
 <?php
 namespace gift\appli\webui\actions;
 
-use gift\appli\core\domain\entities\CoffretType;
+use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\usecases\Catalogue;
+use gift\appli\core\application\usecases\CatalogueInterface;
+use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Routing\RouteContext;
 
 class GetPrestationByCoffretIdAction
 {
+
+    private string $template;
+    private CatalogueInterface $catalogue;
+    public function __construct()
+    {
+        $this->template = 'pages/ViewCoffretPrestations.twig';
+        $this->catalogue = new Catalogue();
+    }
+
     public function __invoke($request, $response, array $args)
     {
         $id = $args['id'] ?? null;
@@ -15,26 +27,22 @@ class GetPrestationByCoffretIdAction
         }
 
         try {
-            $coffretType = CoffretType::findOrFail($id);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            throw new \Slim\Exception\HttpNotFoundException($request, $e->getMessage());
-        } catch (\Exception $e) {
-            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
-        }
-
-        $prestations = $coffretType->prestations;
-        if ($prestations->isEmpty()) {
-            throw new \Slim\Exception\HttpNotFoundException($request, "Aucune prestation trouvée pour le coffret $coffretType->libelle.");
+            $coffretType = $this->catalogue->getCoffretById($id);
+            $prestations = $this->catalogue->getPrestationsByCoffret($id);
+        } catch (EntityNotFoundException $e) {
+            throw new HttpNotFoundException($request, $e->getMessage());
+        } catch (ExceptionDatabase $e) {
+            throw new HttpInternalServiceException($request, $e->getMessage());
         }
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
         foreach ($prestations as $prestation) {
-            $prestation->url = $routeParser->urlFor('prestation', ['id' => $prestation->id]);
+            $prestation->url = $routeParser->urlFor('prestation');
         }
 
         $view = \Slim\Views\Twig::fromRequest($request);
-        return $view->render($response, 'pages/ViewCoffretPrestations.twig', [
+        return $view->render($response, $this->template, [
             'prestations' => $prestations,
             'coffret' => $coffretType,
         ]);

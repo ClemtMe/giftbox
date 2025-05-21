@@ -1,0 +1,11 @@
+<?php
+
+namespace gift\appli\core\domain\exceptions;
+
+class EntityNotFoundException extends \Exception
+{
+    public function __construct($message = "Entity not found")
+    {
+        parent::__construct($message);
+    }
+}
