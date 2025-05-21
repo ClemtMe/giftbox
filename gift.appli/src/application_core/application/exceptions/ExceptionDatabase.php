@@ -3,8 +3,8 @@
 namespace gift\appli\core\application\exceptions;
 class ExceptionDatabase extends \Exception
 {
-    public function __construct($message = "Erreur de base de données", $code = 500, \Throwable $previous = null)
+    public function __construct($message = "Erreur de base de données")
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message);
     }
 }
