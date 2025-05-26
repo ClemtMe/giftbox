@@ -5,8 +5,10 @@ namespace gift\appli\core\application\usecases;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
+use gift\appli\core\domain\entities\Prestation;
 use gift\appli\core\domain\entities\User;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class BoxManagement implements BoxManagementInterface
 {
@@ -51,6 +53,8 @@ class BoxManagement implements BoxManagementInterface
             $coffret = CoffretType::findOrFail($coffretId);
             $prestationIds = $coffret->prestations()->pluck('prestations.id')->toArray();
             $box->prestations()->attach($prestationIds);
+            $box->montant = $box->prestations()->sum('tarif');
+            $box->save();
             return $box->toArray();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
@@ -61,7 +65,22 @@ class BoxManagement implements BoxManagementInterface
 
     public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): array
     {
-        // TODO: Implement updateBoxPrestation() method.
+        try {
+            $box = Box::findOrFail($boxId);
+            DB::beginTransaction();
+            $box->prestations()->detach($prestationId);
+            Prestation::findOrFail($prestationId);
+            for($i=0; $i<$quantity; $i++){
+                $box->prestations()->attach($prestationId);
+            }
+            $box->save();
+            DB::commit();
+            return $box->toArray();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new EntityNotFoundException("Table introuvable");
+        } catch (\Illuminate\Database\QueryException $e){
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        }
     }
 
     public function validateBox(string $userId, string $boxId): void
