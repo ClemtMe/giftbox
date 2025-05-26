@@ -5,7 +5,6 @@ namespace gift\appli\core\application\usecases;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
-use gift\appli\core\domain\entities\Prestation;
 use gift\appli\core\domain\entities\User;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +52,9 @@ class BoxManagement implements BoxManagementInterface
             $coffret = CoffretType::findOrFail($coffretId);
             $prestationIds = $coffret->prestations()->pluck('prestations.id')->toArray();
             $box->prestations()->attach($prestationIds);
-            $box->montant = $box->prestations()->sum('tarif');
+            $box->montant = $box->prestations->sum(function ($prestation) {
+                return $prestation->tarif * $prestation->pivot->quantity;
+            });
             $box->save();
             return $box->toArray();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -68,11 +69,21 @@ class BoxManagement implements BoxManagementInterface
         try {
             $box = Box::findOrFail($boxId);
             DB::beginTransaction();
-            $box->prestations()->detach($prestationId);
-            Prestation::findOrFail($prestationId);
-            for($i=0; $i<$quantity; $i++){
-                $box->prestations()->attach($prestationId);
+            $existing = $box->prestations()->where('prestation_id', $prestationId)->first();
+
+            if ($existing) {
+                // Mise à jour de la quantité existante
+                $currentQuantity = $existing->pivot->quantity;
+                $box->prestations()->updateExistingPivot($prestationId, [
+                    'quantity' => $currentQuantity + $quantity
+                ]);
+            } else {
+                // Nouvelle liaison avec quantité
+                $box->prestations()->attach($prestationId, ['quantity' => $quantity]);
             }
+            $box->montant = $box->prestations->sum(function ($prestation) {
+                return $prestation->tarif * $prestation->pivot->quantity;
+            });
             $box->save();
             DB::commit();
             return $box->toArray();
