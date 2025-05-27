@@ -38,7 +38,7 @@ class GetPrestationAction
         }
 
         if (isset($_SESSION['box'])) {
-            $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']->id);
+            $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']);
             if ($qty == null) $qty=0;
         }else $qty=0;
 

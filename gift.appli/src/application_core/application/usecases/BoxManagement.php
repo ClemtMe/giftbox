@@ -7,7 +7,7 @@ use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\User;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class BoxManagement implements BoxManagementInterface
 {
@@ -69,17 +69,17 @@ class BoxManagement implements BoxManagementInterface
         try {
             $box = Box::findOrFail($boxId);
             DB::beginTransaction();
-            $existing = $box->prestations()->where('prestation_id', $prestationId)->first();
+            $existing = $box->prestations()->where('presta_id', $prestationId)->first();
 
             if ($existing) {
                 // Mise à jour de la quantité existante
-                $currentQuantity = $existing->pivot->quantity;
+                $currentQuantity = $existing->pivot->quantite;
                 $box->prestations()->updateExistingPivot($prestationId, [
-                    'quantity' => $currentQuantity + $quantity
+                    'quantite' => $currentQuantity + $quantity
                 ]);
             } else {
                 // Nouvelle liaison avec quantité
-                $box->prestations()->attach($prestationId, ['quantity' => $quantity]);
+                $box->prestations()->attach($prestationId, ['quantite' => $quantity]);
             }
             $box->montant = $box->prestations->sum(function ($prestation) {
                 return $prestation->tarif * $prestation->pivot->quantity;
@@ -104,11 +104,12 @@ class BoxManagement implements BoxManagementInterface
         // TODO: Implement deleteBox() method.
     }
 
-    public function getQtyPrestation(string $prestationId, string $boxId)
+    public function getQtyPrestation(string $prestationId, string $boxId): int
     {
         try {
             $box = Box::findOrFail($boxId);
-            $nb = $box->prestations()->where('prestation_id', $prestationId)->count();
+            $prestation = $box->prestations()->where('presta_id', $prestationId)->first();
+            $nb = $prestation ? (int) $prestation->pivot->quantite : 0;
         }catch (\Illuminate\Database\QueryException $e){
             throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
