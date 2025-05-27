@@ -3,6 +3,7 @@
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\Catalogue;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Views\Twig;
 
 class AddPresta2BoxAction
@@ -13,13 +14,22 @@ class AddPresta2BoxAction
     {
         $this->catalogue = new Catalogue();
         $this->bm = new BoxManagement();
+        $queryParams = $request->getQueryParams();
 
-        $presta_id = $request->getParam('id');
-        $this->bm->updateBoxPrestation($_SESSION['user'], $_SESSION['box'], $presta_id,1);
-        $qty = $this->bm->getQtyPrestation($request->getParam('id'), $_SESSION['box']->id);
-        $prestation = $this->catalogue->getPrestationById($request->getParam('id'));
+        $id = $queryParams['id'] ?? null;
+        if ($id == null) {
+            throw new HttpBadRequestException($request, "Paramètre manquant");
+        }
+        if (isset($_SESSION['box'])) {
+            $presta_id = $request->getParam('id');
+            $this->bm->updateBoxPrestation($_SESSION['user'], $_SESSION['box'], $presta_id, 1);
+            $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']->id);
+        }else $qty=0;
+
+
+        $prestation = $this->catalogue->getPrestationById($id);
         $template = 'pages/ViewPrestation.twig';
         $view = Twig::fromRequest($request);
-        return $view->render($request, $template, ['prestation' => $prestation, 'quantity' => $qty]);
+        return $view->render($response, $template, ['prestation' => $prestation, 'quantity' => $qty]);
     }
 }
