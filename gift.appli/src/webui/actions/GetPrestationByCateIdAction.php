@@ -36,9 +36,7 @@ class GetPrestationByCateIdAction{
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-        foreach ($prestations as $prestation) {
-            $url = $routeParser->urlFor('prestation');
-        }
+        $url = $routeParser->urlFor('prestation');
 
         $view = \Slim\Views\Twig::fromRequest($request);
         return $view->render($response, $this->template, [
