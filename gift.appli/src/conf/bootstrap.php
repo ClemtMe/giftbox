@@ -2,6 +2,7 @@
 declare(strict_types=1);
 session_start();
 
+use gift\appli\conf\middleware\TwigGlobalBoxMiddleware;
 use gift\appli\infrastructure\Eloquent;
 use Slim\Factory\AppFactory;
 
@@ -17,10 +18,11 @@ $twig = \Slim\Views\Twig::create(__DIR__ . '/../webui/views', ['cache' => false,
 $twig->getEnvironment()
     ->addGlobal('globals', [
         'css_dir'=> 'static/css',
-        'img_dir'=> 'static/img'
+        'img_dir'=> 'static/img',
     ]
-    );
+);
 
+$app->add(new TwigGlobalBoxMiddleware($twig));
 $app->add(\Slim\Views\TwigMiddleware::create($app, $twig));
 
 $app = (require_once __DIR__ . '/routes.php')($app);
