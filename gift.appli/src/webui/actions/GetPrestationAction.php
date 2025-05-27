@@ -1,6 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
@@ -13,10 +14,12 @@ class GetPrestationAction
 
     private string $template;
     private CatalogueInterface $catalogue;
+    private BoxManagement $bm;
     public function __construct()
     {
         $this->template = 'pages/ViewPrestation.twig';
         $this->catalogue = new Catalogue();
+        $this->bm = new BoxManagement();
     }
     public function __invoke($rq, $rs, $args) {
         $queryParams = $rq->getQueryParams();
@@ -34,8 +37,13 @@ class GetPrestationAction
             throw new HttpInternalServiceException($rq, $e->getMessage());
         }
 
+        if (isset($_SESSION['box'])) {
+            $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']->id);
+            if ($qty == null) $qty=0;
+        }else $qty=0;
+
         $view = Twig::fromRequest($rq);
-        return $view->render($rs, $this->template, $prestation);
+        return $view->render($rs, $this->template, ['prestation' => $prestation, 'quantity' => $qty]);
     }
 }   
 

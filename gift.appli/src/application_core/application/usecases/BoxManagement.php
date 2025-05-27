@@ -20,10 +20,10 @@ class BoxManagement implements BoxManagementInterface
     {
         try {
             $box = new Box();
-            $box->name = $name;
+            $box->libelle = $name;
             $box->description = $description;
-            $box->cadeau = $cadeau;
-            $box->messageKdo = $messageKdo;
+            $box->kdo = $cadeau;
+            $box->message_kdo = $messageKdo;
             $user = User::findOrFail($userId);
             $box->user()->associate($user);
             $box->save();
@@ -102,5 +102,18 @@ class BoxManagement implements BoxManagementInterface
     public function deleteBox(string $userId, string $boxId): void
     {
         // TODO: Implement deleteBox() method.
+    }
+
+    public function getQtyPrestation(string $prestationId, string $boxId)
+    {
+        try {
+            $box = Box::findOrFail($boxId);
+            $nb = $box->prestations()->where('prestation_id', $prestationId)->count();
+        }catch (\Illuminate\Database\QueryException $e){
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new EntityNotFoundException("Table introuvable");
+        }
+        return $nb;
     }
 }
