@@ -84,6 +84,10 @@ class BoxManagement implements BoxManagementInterface
                 // Nouvelle liaison avec quantité
                 $box->prestations()->attach($prestationId, ['quantite' => $quantity]);
             }
+            if ($quantity <= 0) {
+                // Supprimer la liaison si quantité 0
+                $box->prestations()->detach($prestationId);
+            }
             $box->montant = $box->prestations->sum(function ($prestation) {
                 return $prestation->tarif * $prestation->pivot->quantity;
             });
