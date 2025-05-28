@@ -16,7 +16,7 @@ class BoxManagement implements BoxManagementInterface
      * @throws EntityNotFoundException
      * @throws ExceptionDatabase
      */
-    public function createEmptyBox(string $userId, string $name, string $description, bool $cadeau, string $messageKdo = ''): array
+    public function createEmptyBox(string $userId, string $name, string $description, bool $cadeau, string $messageKdo = ''): string
     {
         try {
             $box = new Box();
@@ -27,7 +27,7 @@ class BoxManagement implements BoxManagementInterface
             $user = User::findOrFail($userId);
             $box->user()->associate($user);
             $box->save();
-            return $box->toArray();
+            return $box->id;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
@@ -39,7 +39,7 @@ class BoxManagement implements BoxManagementInterface
      * @throws EntityNotFoundException
      * @throws ExceptionDatabase
      */
-    public function createBoxCoffret(string $userId, string $name, string $description, bool $cadeau, int $coffretId, string $messageKdo = ''): array
+    public function createBoxCoffret(string $userId, string $name, string $description, bool $cadeau, int $coffretId, string $messageKdo = ''): string
     {
         try {
             $box = new Box();
@@ -56,7 +56,7 @@ class BoxManagement implements BoxManagementInterface
                 return $prestation->tarif * $prestation->pivot->quantity;
             });
             $box->save();
-            return $box->toArray();
+            return $box->id;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
@@ -64,7 +64,7 @@ class BoxManagement implements BoxManagementInterface
         }
     }
 
-    public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): array
+    public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): bool
     {
         try {
             $box = Box::findOrFail($boxId);
@@ -94,12 +94,12 @@ class BoxManagement implements BoxManagementInterface
         }
     }
 
-    public function validateBox(string $userId, string $boxId): void
+    public function validateBox(string $userId, string $boxId): bool
     {
         // TODO: Implement validateBox() method.
     }
 
-    public function deleteBox(string $userId, string $boxId): void
+    public function deleteBox(string $userId, string $boxId): bool
     {
         // TODO: Implement deleteBox() method.
     }
@@ -116,5 +116,30 @@ class BoxManagement implements BoxManagementInterface
             throw new EntityNotFoundException("Table introuvable");
         }
         return $nb;
+    }
+
+    public function getBoxByIdSessionFormat(string $boxId): array
+    {
+        try {
+            $box = Box::find($_SESSION['box']);
+            $box = [
+                'id' => $box->id,
+                'libelle' => $box->libelle,
+                'description' => $box->description,
+                'montant' => $box->montant,
+                'prestations' => $box->prestations->map(function ($presta) {
+                    return [
+                        'libelle' => $presta->libelle,
+                        'description' => $presta->description,
+                        'tarif' => $presta->tarif,
+                        'unite' => $presta->unite,
+                        'quantite' => $presta->pivot->quantite,
+                    ];
+                })->toArray(),
+            ];
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
+        return $box;
     }
 }
