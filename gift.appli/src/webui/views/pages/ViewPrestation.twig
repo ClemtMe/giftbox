@@ -10,11 +10,32 @@
         <a href="{{ prestation.url }}" class="text-blue-600 hover:underline break-words">{{ prestation.url }}</a>
         <p class="text-gray-900 font-semibold">Prix : {{ prestation.tarif }}€</p>
         <img src="/{{ globals.img_dir }}/{{ prestation.img }}" alt="{{ prestation.libelle }}" class="w-full rounded-md object-cover" />
-        <div class="flex items-center justify-start gap-4 mt-4">
-            <a href="/giftbox/prestation/remove?id={{ prestation.id }}" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">−</a>
-            <span class="text-lg font-semibold">{{ quantity }}</span>
-            <a href="/giftbox/prestation/add?id={{ prestation.id }}" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">+</a>
-        </div>
+
+        {% if quantity is defined %}
+            <form action="{{ url }}" method="POST" class="flex items-center justify-start gap-4 mt-4">
+                <span id="btn-moins" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">−</span>
+                <span id="quantite" class="text-lg font-semibold">{{ quantity }}</span>
+                <span id="btn-plus" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">+</span>
+                <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                <input type="hidden" name="quantity" id="quantity-input" value="{{ quantity }}">
+                <button type="submit"><i class="fas fa-check" style="color: green;"></i></button>
+            </form>
+        {% endif %}
 
     </div>
+
+    <script>
+        let quantity = document.getElementById('quantite');
+        let quantityInput = document.getElementById('quantity-input');
+        document.getElementById('btn-plus').addEventListener('click', function() {
+            quantity.textContent = parseInt(quantity.textContent) + 1;
+            quantityInput.value = quantity.textContent;
+        });
+        document.getElementById('btn-moins').addEventListener('click', function() {
+            if (parseInt(quantity.textContent) > 0) {
+                quantity.textContent = parseInt(quantity.textContent) - 1;
+                quantityInput.value = quantity.textContent;
+            }
+        });
+    </script>
 {% endblock %}

@@ -66,6 +66,9 @@ class BoxManagement implements BoxManagementInterface
 
     public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): bool
     {
+        if($quantity < 0) {
+            return false;
+        }
         try {
             $box = Box::findOrFail($boxId);
             DB::beginTransaction();
@@ -75,7 +78,7 @@ class BoxManagement implements BoxManagementInterface
                 // Mise à jour de la quantité existante
                 $currentQuantity = $existing->pivot->quantite;
                 $box->prestations()->updateExistingPivot($prestationId, [
-                    'quantite' => $currentQuantity + $quantity
+                    'quantite' => $quantity
                 ]);
             } else {
                 // Nouvelle liaison avec quantité
@@ -86,7 +89,7 @@ class BoxManagement implements BoxManagementInterface
             });
             $box->save();
             DB::commit();
-            return $box->toArray();
+            return true;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){

@@ -23,7 +23,7 @@ class TwigGlobalBoxMiddleware
     {
         if(ISSET($_SESSION['box'])){
             $box = $this->boxManagement->getBoxByIdSessionFormat($_SESSION['box']);
-            $this->twig->getEnvironment()->addGlobal('box', $box);
+            $this->twig->getEnvironment()->addGlobal('boxSession', $box);
         }
         return $handler->handle($request);
     }

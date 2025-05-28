@@ -7,6 +7,7 @@ use gift\appli\core\application\usecases\CatalogueInterface;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 
 class GetPrestationAction
@@ -38,13 +39,23 @@ class GetPrestationAction
         }
 
         if (isset($_SESSION['box'])) {
-            $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']['id']);
-            if ($qty == null) $qty=0;
-        }else $qty=0;
+            try {
+                $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']);
+            } catch (ExceptionDatabase $e) {
+                throw new HttpInternalServiceException($rq, "Erreur de base de données : " . $e->getMessage());
+            } catch (EntityNotFoundException $e) {
+                throw new HttpNotFoundException($rq, "Entité non trouvée : " . $e->getMessage());
+            }
+
+            $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
+            $url = $routeParser->urlFor('set_prestation_to_box');
+
+            $view = Twig::fromRequest($rq);
+            return $view->render($rs, $this->template, ['prestation' => $prestation, 'quantity' => $qty, 'url' => $url]);
+        }
 
         $view = Twig::fromRequest($rq);
-        return $view->render($rs, $this->template, ['prestation' => $prestation, 'quantity' => $qty]);
+        return $view->render($rs, $this->template, ['prestation' => $prestation]);
     }
 }   
 
-?>
