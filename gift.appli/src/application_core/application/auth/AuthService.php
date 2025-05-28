@@ -8,12 +8,13 @@ use gift\appli\core\domain\entities\User;
 class AuthService implements AuthServiceInterface
 {
 
-    public function register(string $username, string $passwordhash): string
+    public function register(string $username, string $password): string
     {
+        $password = password_hash($password, PASSWORD_DEFAULT);
         try {
             $user = new User();
             $user->user_id = $username;
-            $user->password = $passwordhash;
+            $user->password = $password;
             $user->role = 1;
             $user->save();
             return $user->id;
@@ -22,16 +23,16 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    public function loginByCredential(string $username, string $passwordhash): bool
+    public function loginByCredential(string $username, string $password): bool
     {
-
+        $password = password_hash($password, PASSWORD_DEFAULT);
         try {
             $user = User::where('user_id', $username)
                 ->first();
             if($user === null) {
                 return false;
             }
-            if($user->password !== $passwordhash) {
+            if(!password_verify($password, $user->password)) {
                 return false;
             }
             return true;
