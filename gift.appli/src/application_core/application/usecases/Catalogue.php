@@ -2,12 +2,12 @@
 namespace gift\appli\core\application\usecases;
 
 use Couchbase\QueryException;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Categorie;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\Prestation;
 use gift\appli\core\domain\entities\Theme;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 
 class Catalogue implements CatalogueInterface
 {

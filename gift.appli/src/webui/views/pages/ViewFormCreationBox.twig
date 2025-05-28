@@ -1,0 +1,22 @@
+<form action="" method="post">
+    <ul>
+        <li>
+            <label for="libelle">libelle</label>
+            <input type="text"  id="libelle">
+        </li>
+        <li>
+            <label for="description">description</label>
+            <input type="text"  id="description">
+        </li>
+        <li>
+            <label for="kdo">cadeau</label>
+            <input type="checkbox"  id="kdo">
+        </li>
+        <li>
+            <label for="message_kdo">message</label>
+            <input type="text"  id="message_kdo">
+        </li>
+    </ul>
+    <input type="hidden" name="token" value="{{ token }}">
+    <input type="submit" value="Envoyer">
+</form>

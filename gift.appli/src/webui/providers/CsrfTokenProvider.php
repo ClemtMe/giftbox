@@ -1,6 +1,5 @@
 <?php
-namespace gift\appli\core\application\providers;
-use PhpParser\Token;
+namespace gift\appli\webui\providers;
 
 class CsrfTokenProvider{
     static function generate(){

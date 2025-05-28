@@ -1,9 +1,9 @@
 <?php
 namespace gift\appli\webui\actions;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
