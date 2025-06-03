@@ -8,6 +8,7 @@ use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
+use gift\appli\webui\actions\CreationBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -38,6 +39,8 @@ return function (Slim\App $app) {
     $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
 
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
+
+    $app->get('/box/create', CreationBoxAction::class)->setName('create');
 
     return $app;
 };

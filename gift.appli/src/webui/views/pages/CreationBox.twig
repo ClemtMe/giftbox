@@ -1,0 +1,23 @@
+{% extends 'Base.twig' %}
+
+{% block title %}Créer une Box{% endblock %}
+
+{% block content %}
+    <h1>Créer une Box</h1>
+
+    <form method="get" action="/box/create">
+        <label for="name">Nom de la Box :</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="is_gift">Cadeau :</label>
+        <input type="checkbox" id="is_gift" name="is_gift">
+
+        <label for="gift_message">Message (si cadeau) :</label>
+        <textarea id="gift_message" name="gift_message"></textarea>
+
+        <button type="submit">Créer</button>
+    </form>
+{% endblock %}
