@@ -16,38 +16,35 @@ class AuthProvider implements AuthProviderInterface
         $this->authService = new AuthService();
     }
 
+    /**
+     * @throws ExceptionDatabase
+     * @throws AuthentificationException
+     */
     public function register(string $username, string $password): void
     {
-        try {
-            $id = $this->authService->register($username, $password);
-            $_SESSION['user'] = $id;
-        } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServerErrorException("Erreur lors de l'enregistrement : " . $e->getMessage());
-        }
+        $id = $this->authService->register($username, $password);
+        $_SESSION['user'] = $id;
     }
 
+    /**
+     * @throws ExceptionDatabase
+     * @throws AuthentificationException
+     */
     public function loginByCredential(string $username, string $password): void
     {
-        try {
-            $id = $this->authService->loginByCredential($username, $password);
-            $_SESSION['user'] = $id;
-        } catch (AuthentificationException $e) {
-            throw new Slim\Exception\HttpUnauthorizedException("Authentification échouée : " . $e->getMessage());
-        } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServerErrorException("Erreur de base de donnée : " . $e->getMessage());
-        }
+        $id = $this->authService->loginByCredential($username, $password);
+        $_SESSION['user'] = $id;
     }
 
+    /**
+     * @throws ExceptionDatabase
+     */
     public function getSignedInUser(): array
     {
         if (!isset($_SESSION['user'])) {
             return [];
         }
 
-        try {
-            return $this->authService->getUserById($_SESSION['user']);
-        } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServerErrorException("Erreur de base de donnée : " . $e->getMessage());
-        }
+        return $this->authService->getUserById($_SESSION['user']);
     }
 }

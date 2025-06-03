@@ -8,6 +8,9 @@ use Slim\Factory\AppFactory;
 
 Eloquent::init(__DIR__ . '/gift.db.conf.ini.dist');
 
+$box = gift\appli\core\domain\entities\Box::first();
+$_SESSION['box'] = $box->id;
+
 $app = AppFactory::create();
 $app->addRoutingMiddleware(true, false, false);
 $app->addBodyParsingMiddleware();
