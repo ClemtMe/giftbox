@@ -2,19 +2,23 @@
 
 namespace gift\appli\webui\actions;
 
-use gift\appli\core\application\usecases\BoxInterface;
-use gift\appli\core\domain\exceptions\TokenMissingException;
 use gift\appli\core\domain\exceptions\InvalidTokenException;
+use gift\appli\core\domain\exceptions\TokenMissingException;
+use gift\appli\webui\providers\BoxServiceProvider;
+use gift\appli\webui\providers\BoxServiceProviderInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use webui\exceptions\BoxAccesException;
 
 class AccesBoxAction
 {
-    private BoxInterface $boxService;
+    private BoxServiceProviderInterface $boxService;
+    private $template;
 
-    public function __construct(BoxInterface $boxService)
+    public function __construct()
     {
-        $this->boxService = $boxService;
+        $this->boxService = new BoxServiceProvider();
+        $this->template = 'pages/ViewBox.twig';
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
@@ -23,17 +27,18 @@ class AccesBoxAction
         $token = $params['token'] ?? null;
 
         if (!$token) {
-            throw new TokenMissingException("Aucun token fourni.");
+            throw new \Slim\Exception\HttpBadRequestException($request, "Token manquant dans les paramètres de la requête.");
         }
 
-        $decodedToken = urldecode($token);
-        $box = $this->boxService->getBoxByToken($decodedToken);
-
-        if (!$box) {
-            throw new InvalidTokenException("Token invalide ou box introuvable.");
+        try {
+            $box = $this->boxService->getBoxByToken($token);
+        } catch (BoxAccesException $e) {
+            throw new \Slim\Exception\HttpBadRequestException($request, "Erreur lors de l'accès à la box: " . $e->getMessage());
         }
 
-        $response->getBody()->write("Accès autorisé à la box : " . htmlspecialchars($box->name));
-        return $response;
+        $view = \Slim\Views\Twig::fromRequest($request);
+        return $view->render($response, $this->template, [
+            'box' => $box
+        ]);
     }
 }
