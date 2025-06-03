@@ -26,6 +26,15 @@ class RegisterAction
             $email = $params['email'] ?? '';
             $password = $params['password'] ?? '';
 
+            // Valider les données
+            if(FILTER_VAR($email, FILTER_VALIDATE_EMAIL) === false || empty($email)) {
+                throw new \Slim\Exception\HttpBadRequestException($request, "Adresse e-mail invalide.");
+            }
+
+            if (empty($password) || strlen($password) < 6 || !preg_match('/[a-zA-Z]/', $password) || !preg_match('/[0-9]/', $password)) {
+                throw new \Slim\Exception\HttpBadRequestException($request, "Le mot de passe doit contenir au moins 6 caractères et inclure des lettres et des chiffres.");
+            }
+
             // Authentifier l'utilisateur
             try {
                 $this->authProvider->register($email, $password);
