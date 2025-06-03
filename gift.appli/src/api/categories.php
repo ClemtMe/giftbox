@@ -21,8 +21,6 @@ class Categories {
             $categories = $this->catalogue->getCategories();
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
-        } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($request, $e->getMessage());
         }
 
         //Transformation des données
