@@ -1,12 +1,12 @@
 <?php
-namespace gift\api;
+namespace gift\appli\api;
 
+use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
 
 class Categories {
 
