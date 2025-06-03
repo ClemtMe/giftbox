@@ -44,10 +44,14 @@ class SetPresta2BoxAction
         }
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        $url = $routeParser->urlFor('set_prestation_to_box');
+        try {
+            $prestation = $this->catalogue->getPrestationById($presta_id);
+        } catch (ExceptionDatabase $e) {
+            throw new HttpInternalServiceException($request, "Erreur de base de données : " . $e->getMessage());
+        } catch (EntityNotFoundException $e) {
+            throw new HttpNotFoundException($request, "Entité non trouvée : " . $e->getMessage());
+        }
 
-        $prestation = $this->catalogue->getPrestationById($presta_id);
-        $view = Twig::fromRequest($request);
-        return $view->render($response, $this->template, ['prestation' => $prestation, 'quantity' => $qty, 'url' => $url, 'boxSession' => $box]);
+        return $response->withHeader('Location', $routeParser->urlFor('prestation')."?id={$prestation['id']}")->withStatus(302);
     }
 }
