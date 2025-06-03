@@ -1,0 +1,27 @@
+{% extends 'Base.twig' %}
+
+{% block content %}
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ box.libelle }}</h2>
+    <p class="text-gray-600 mb-4"><em>{{ box.description }}</em></p>
+    <div class="flex items-center justify-between mb-6 border-b">
+        <span class="text-gray-600">Montant total :</span>
+        <span class="text-lg font-semibold text-blue-600">{{ box.montant }} €</span>
+    </div>
+    <h3 class="text-lg font-semibold text-gray-700 mb-2">Prestations incluses :</h3>
+    <ul class="divide-y divide-gray-200 h-[50%] overflow-y-auto scrollbar-thin">
+        {% for prestation in box.prestations %}
+            <li class="py-3 flex flex-col">
+                <span class="font-medium text-gray-800">{{ prestation.libelle }}</span>
+                <span class="text-gray-500 text-sm">{{ prestation.description }}</span>
+                <span class="text-sm mt-1 flex justify-between items-center">
+                    <span class="text-blue-500">{{ prestation.tarif }} € {{ prestation.unite }}</span>
+                    <span>Quantité : {{ prestation.quantite }}</span>
+                </span>
+            </li>
+        {% else %}
+            <li class="py-3 text-gray-400">Aucune prestation</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

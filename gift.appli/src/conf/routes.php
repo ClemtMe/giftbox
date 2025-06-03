@@ -7,6 +7,7 @@ use gift\appli\webui\actions\GetCoffretTypeAction;
 use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
+use gift\appli\webui\actions\AccesBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -34,6 +35,8 @@ return function (Slim\App $app) {
     $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
 
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
+
+    $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
 
     return $app;
 };
