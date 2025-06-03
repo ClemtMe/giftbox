@@ -1,6 +1,7 @@
 <?php
 
 use gift\appli\api\Categories;
+use gift\appli\api\Boxes;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -38,6 +39,9 @@ return function (Slim\App $app) {
 
     // API de toutes les catégories
     $app->get('/api/categories[/]', Categories::class)->setName('api_categories');
+
+    // API de croffrets-types avec option d'en chercher un par id
+    $app->get('api/boxes[/[{id}[/]]]', Boxes::class)->setName('api_boxes');
 
     return $app;
 };
