@@ -7,6 +7,8 @@ use gift\appli\webui\actions\GetCoffretTypeAction;
 use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
+use gift\appli\webui\actions\LoginAction;
+use gift\appli\webui\actions\RegisterAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,6 +19,9 @@ return function (Slim\App $app) {
         $view = \Slim\Views\Twig::fromRequest($request);
         return $view->render($response, 'pages/ViewAccueil.twig');
     })->setName('home');
+
+    $app->map(['GET', 'POST'], '/login', LoginAction::class)->setName('login');
+    $app->map(['GET', 'POST'], '/register', RegisterAction::class)->setName('register');
 
     // Toutes les catégories
     $app->get('/categories[/]', GetCategoriesAction::class)->setName('categories');
