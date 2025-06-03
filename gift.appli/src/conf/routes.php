@@ -11,6 +11,7 @@ use gift\appli\webui\actions\LoginAction;
 use gift\appli\webui\actions\RegisterAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
 use gift\appli\webui\actions\AccesBoxAction;
+use gift\appli\webui\actions\CreationBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -46,6 +47,8 @@ return function (Slim\App $app) {
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
 
     $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
+
+    $app->get('/box/create', CreationBoxAction::class)->setName('create');
 
     return $app;
 };
