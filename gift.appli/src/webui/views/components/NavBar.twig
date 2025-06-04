@@ -14,7 +14,11 @@
                 <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden z-10">
                     <p class="block px-4 py-2 bg-blue-500 text-black">{% if userSession is defined %}{{ userSession.username }}{% else %}Non connecté{% endif %}</p>
                     <a href="{{ url_for('mes_boxes') }}" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Mes boxes</a>
-                    <button id="deco" class="block px-4 py-2 w-full text-left hover:bg-gray-100 text-gray-700">Déconnexion</button>
+                    <div class="block px-4 py-2 w-full text-left hover:bg-gray-100 text-gray-700">
+                        <form method="POST" action="{{ url_for('logout') }}">
+                            <button type="submit" class="w-full text-left hover:bg-gray-100 text-gray-700">Déconnexion</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -129,23 +133,6 @@
     document.addEventListener('click', (e) => {
         if (!dropdown.contains(e.target)) {
             dropdown.classList.add('hidden');
-        }
-    });
-
-    document.getElementById('deco').addEventListener('click', async () => {
-        try {
-            const response = await fetch('{{ url_for('logout') }}', {
-                method: 'POST',
-                credentials: 'same-origin'
-            });
-
-            if (response.ok) {
-                window.location.href = '{{ url_for('login') }}';
-            } else {
-                alert("Erreur lors de la déconnexion.");
-            }
-        } catch (err) {
-            console.error('Erreur réseau :', err);
         }
     });
 </script>

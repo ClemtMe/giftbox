@@ -131,6 +131,13 @@ class BoxManagement implements BoxManagementInterface
         }
         try {
             $box = Box::findOrFail($boxId);
+            if ($box->statut !== 1) {
+                throw new AuthorizationException("La box n'est pas en cours de création");
+            }
+            // Vérification que la box a au moins deux prestation
+            if ($box->prestations->count() < 2) {
+                throw new AuthorizationException("La box doit contenir au moins deux prestations pour être validée");
+            }
             $box->statut = 2;
             $box->save();
             return true;
@@ -148,10 +155,10 @@ class BoxManagement implements BoxManagementInterface
      */
     public function deleteBox(string $userId, string $boxId): bool
     {
+        if ($this->authorizationService->isAuthorized($userId, AuthorizationServiceInterface::PERMISSION_DELETE_BOX, $boxId) === false) {
+            throw new AuthorizationException("Vous n'avez pas les droits pour supprimer cette box");
+        }
         try {
-            if ($this->authorizationService->isAuthorized($userId, AuthorizationServiceInterface::PERMISSION_DELETE_BOX, $boxId) === false) {
-                throw new AuthorizationException("Vous n'avez pas les droits pour supprimer cette box");
-            }
             $box = Box::findOrFail($boxId);
             $box->prestations()->detach();
             $box->delete();

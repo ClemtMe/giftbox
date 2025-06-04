@@ -3,9 +3,9 @@
 namespace gift\appli\core\application\authorization;
 
 use gift\appli\core\application\auth\AuthService;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Box;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 
 class AuthorizationService implements AuthorizationServiceInterface
 {
@@ -37,6 +37,7 @@ class AuthorizationService implements AuthorizationServiceInterface
 
     /**
      * @throws ExceptionDatabase
+     * @throws EntityNotFoundException
      */
     public function isAdmin(string $userId): bool
     {

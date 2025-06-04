@@ -3,6 +3,7 @@
 namespace gift\appli\core\application\auth;
 
 use gift\appli\core\application\exceptions\AuthentificationException;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\User;
 use Ramsey\Uuid\Uuid;
@@ -59,13 +60,14 @@ class AuthService implements AuthServiceInterface
 
     /**
      * @throws ExceptionDatabase
+     * @throws EntityNotFoundException
      */
     public function getUserById(string $userId): array
     {
         try {
             $user = User::find($userId);
             if ($user === null) {
-                throw new ExceptionDatabase('Utilisateur non trouvé');
+                throw new EntityNotFoundException('Utilisateur non trouvé');
             }
             return [
                 'id' => $user->id,

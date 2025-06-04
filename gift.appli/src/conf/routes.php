@@ -2,6 +2,7 @@
 
 use gift\appli\webui\actions\AccesBoxAction;
 use gift\appli\webui\actions\CreationBoxAction;
+use gift\appli\webui\actions\DeleteBoxAction;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -14,6 +15,7 @@ use gift\appli\webui\actions\LoginAction;
 use gift\appli\webui\actions\LogoutAction;
 use gift\appli\webui\actions\RegisterAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
+use gift\appli\webui\actions\ValidateBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -55,9 +57,9 @@ return function (Slim\App $app) {
 
     $app->get('/mesBoxes[/]', GetUserBoxesAction::class)->setName('mes_boxes');
 
-    $app->post('/box/validate[/]', function ($request, $response) {})->setName('box_validate');
+    $app->post('/box/validate[/]', ValidateBoxAction::class)->setName('box_validate');
 
-    $app->post('/box/delete[/]', function ($request, $response) {})->setName('box_delete');
+    $app->post('/box/delete[/]', DeleteBoxAction::class)->setName('box_delete');
 
 
     return $app;
