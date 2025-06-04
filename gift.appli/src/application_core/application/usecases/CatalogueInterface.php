@@ -10,4 +10,5 @@ Interface CatalogueInterface{
     public function getThemesCoffrets(): array;
     public function getCoffretById(int $id): array;
     public function getCoffrets(): array;
+    public function getPrestations(): array;
 }

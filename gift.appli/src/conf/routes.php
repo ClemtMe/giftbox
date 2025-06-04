@@ -1,5 +1,9 @@
 <?php
 
+use gift\appli\api\actions\CategoriesAction;
+use gift\appli\api\actions\BoxesAction;
+use gift\appli\api\actions\PrestationsAction;
+use gift\appli\api\actions\PrestationsByCategorieAction;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -22,7 +26,7 @@ return function (Slim\App $app) {
     $app->get('/categories[/]', GetCategoriesAction::class)->setName('categories');
 
     // Une catégories selon un ID
-    $app->get('/categorie[/[{id}[/]]]', GetCategorieAction::class)->setName('categorie');
+    $app->get('/categorie/{id}[/]', GetCategorieAction::class)->setName('categorie');
 
     // Une préstation selon un ID passé dans la query string
     $app->get('/prestation[/]', GetPrestationAction::class)->setName('prestation');
@@ -32,9 +36,21 @@ return function (Slim\App $app) {
 
     $app->get('/coffretsType[/]', GetCoffretsTypeAction::class)->setName('coffrets_type');
 
-    $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
+    $app->get('/coffretType/{id}[/]', GetCoffretTypeAction::class)->setName('coffret_type');
 
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
+
+    // API de toutes les catégories avec option d'en chercher une par id
+    $app->get('/api/categories[/[{id}[/]]]', CategoriesAction::class)->setName('api_categories');
+
+    // API de tous les croffrets-types avec option d'en chercher un par id
+    $app->get('/api/boxes[/[{id}[/]]]', BoxesAction::class)->setName('api_boxes');
+
+    // API de toutes les prestations avec option d'en chercher une par id
+    $app->get('/api/prestations[/[{id}[/]]]', PrestationsAction::class)->setName('api_prestations');
+
+    // API des préstations d'une categorie selon un ID
+    $app->get('/api/categories/{id}/prestations[/]', PrestationsByCategorieAction::class)->setName('api_prestations_by_categorie');
 
     $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
 
