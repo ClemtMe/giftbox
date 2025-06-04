@@ -5,11 +5,11 @@ namespace gift\appli\core\application\usecases;
 use gift\appli\core\application\authorization\AuthorizationService;
 use gift\appli\core\application\authorization\AuthorizationServiceInterface;
 use gift\appli\core\application\exceptions\AuthorizationException;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\User;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Illuminate\Database\Capsule\Manager as DB;
 
 class BoxManagement implements BoxManagementInterface
@@ -118,16 +118,55 @@ class BoxManagement implements BoxManagementInterface
         }
     }
 
+    /**
+     * @throws ExceptionDatabase
+     * @throws AuthorizationException
+     * @throws EntityNotFoundException
+     */
     public function validateBox(string $userId, string $boxId): bool
     {
-        // TODO: Implement validateBox() method.
+
+        if ($this->authorizationService->isAuthorized($userId, AuthorizationServiceInterface::PERMISSION_UPDATE_BOX, $boxId) === false) {
+            throw new AuthorizationException("Vous n'avez pas les droits pour valider cette box");
+        }
+        try {
+            $box = Box::findOrFail($boxId);
+            $box->statut = 2;
+            $box->save();
+            return true;
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new EntityNotFoundException("Table introuvable");
+        } catch (\Illuminate\Database\QueryException $e){
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        }
     }
 
+    /**
+     * @throws ExceptionDatabase
+     * @throws AuthorizationException
+     * @throws EntityNotFoundException
+     */
     public function deleteBox(string $userId, string $boxId): bool
     {
-        // TODO: Implement deleteBox() method.
+        try {
+            if ($this->authorizationService->isAuthorized($userId, AuthorizationServiceInterface::PERMISSION_DELETE_BOX, $boxId) === false) {
+                throw new AuthorizationException("Vous n'avez pas les droits pour supprimer cette box");
+            }
+            $box = Box::findOrFail($boxId);
+            $box->prestations()->detach();
+            $box->delete();
+            return true;
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new EntityNotFoundException("Table introuvable");
+        } catch (\Illuminate\Database\QueryException $e){
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        }
     }
 
+    /**
+     * @throws EntityNotFoundException
+     * @throws ExceptionDatabase
+     */
     public function getQtyPrestation(string $prestationId, string $boxId): int
     {
         try {

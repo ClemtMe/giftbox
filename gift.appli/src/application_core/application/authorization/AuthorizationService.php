@@ -25,6 +25,7 @@ class AuthorizationService implements AuthorizationServiceInterface
             case AuthorizationServiceInterface::PERMISSION_CREATE_BOX:
                 return $user['role'] >= 1;
             case AuthorizationServiceInterface::PERMISSION_UPDATE_BOX:
+            case AuthorizationServiceInterface::PERMISSION_DELETE_BOX:
                 if ($resourceId === null) {
                     return false;
                 }

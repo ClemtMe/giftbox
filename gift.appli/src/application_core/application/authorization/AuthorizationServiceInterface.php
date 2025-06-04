@@ -5,6 +5,7 @@ namespace gift\appli\core\application\authorization;
 interface AuthorizationServiceInterface
 {
     const PERMISSION_UPDATE_BOX = 'update_box';
+    const PERMISSION_DELETE_BOX = 'delete_box';
     const PERMISSION_CREATE_BOX = 'create_box';
     const PERMISSION_READ_BOX = 'read_box';
 
