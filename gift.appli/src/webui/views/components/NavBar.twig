@@ -1,7 +1,151 @@
 <nav class="bg-white border-b border-gray-200 px-4 py-3 shadow-md">
-    <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-        <li class="hover:text-blue-500"><a href="{{ url_for('home') }}">Accueil</a></li>
-        <li class="hover:text-blue-500"><a href="{{ url_for('categories') }}">Catégories</a></li>
-        <li class="hover:text-blue-500"><a href="{{ url_for('coffrets_type') }}">Coffrets</a></li>
-    </ul>
+    <div class="flex items-center justify-between">
+        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
+            <li class="hover:text-blue-500"><a href="{{ url_for('home') }}">Accueil</a></li>
+            <li class="hover:text-blue-500"><a href="{{ url_for('categories') }}">Catégories</a></li>
+            <li class="hover:text-blue-500"><a href="{{ url_for('coffrets_type') }}">Coffrets</a></li>
+        </ul>
+        <div class="flex items-center space-x-4">
+            <!-- Menu Profil -->
+            <div class="relative">
+                <button id="profileMenuButton" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500 focus:outline-none">
+                    <i class="fa fa-user-circle fa-2x"></i>
+                </button>
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden z-10">
+                    <p class="block px-4 py-2 bg-blue-500 text-black">{% if userSession is defined %}{{ userSession.username }}{% else %}Non connecté{% endif %}</p>
+                    <a href="/commandes" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Mes boxes</a>
+                    <button id="deco" class="block px-4 py-2 w-full text-left hover:bg-gray-100 text-gray-700">Déconnexion</button>
+                </div>
+            </div>
+
+            <!-- Bouton box -->
+            <button id="toggleDrawer" class="text-gray-700 focus:outline-none hover:text-blue-500">
+                <i class="fa fa-gift fa-2x"></i>
+            </button>
+        </div>
+    </div>
 </nav>
+
+<!-- Drawer (panneau latéral droit) -->
+<div id="drawer" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+    <div class="p-4 flex justify-between items-center border-b">
+        <h2 class="text-lg font-semibold">Votre Box</h2>
+        <button id="closeDrawer" class="text-gray-600 hover:text-red-500">
+            ✕
+        </button>
+    </div>
+    <div class="p-4 h-full">
+        {% if boxSession is defined %}
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ boxSession.libelle }}</h2>
+            <p class="text-gray-600 mb-4"><em>{{ boxSession.description }}</em></p>
+            <div class="flex items-center justify-between mb-6 border-b">
+                <span class="text-gray-600">Montant total :</span>
+                <span class="text-lg font-semibold text-blue-600">{{ boxSession.montant }} €</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Prestations incluses :</h3>
+            <ul class="divide-y divide-gray-200 h-[50%] overflow-y-auto scrollbar-thin">
+                {% for prestation in boxSession.prestations %}
+                    <li class="py-3 flex flex-col">
+                        <span class="font-medium text-gray-800">{{ prestation.libelle }}</span>
+                        <span class="text-gray-500 text-sm">{{ prestation.description }}</span>
+                        <span class="text-sm mt-1 flex justify-between items-center">
+                            <span class="text-blue-500">{{ prestation.tarif }} € {{ prestation.unite }}</span>
+                            <span>Quantité : {{ prestation.quantite }}</span>
+                        </span>
+                    </li>
+                {% else %}
+                    <li class="py-3 text-gray-400">Aucune prestation</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <span>Aucune box en session</span>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Overlay pour cliquer à l'extérieur -->
+<div id="overlay" class="fixed inset-0 bg-black opacity-30 z-40 hidden"></div>
+
+<!-- Styles -->
+<style>
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: rgba(100, 116, 139, 0.6); /* slate-500 */
+        border-radius: 9999px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(100, 116, 139, 0.9);
+    }
+
+    /* Firefox support */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(100, 116, 139, 0.6) transparent;
+    }
+</style>
+
+<!-- JavaScript pour la box -->
+<script>
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('toggleDrawer');
+    const closeBtn = document.getElementById('closeDrawer');
+
+    openBtn.addEventListener('click', () => {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    });
+</script>
+
+<!-- JavaScript pour le user -->
+<script>
+    const profileBtn = document.getElementById('profileMenuButton');
+    const dropdown = document.getElementById('profileDropdown');
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('deco').addEventListener('click', async () => {
+        try {
+            const response = await fetch('{{ url_for('logout') }}', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                window.location.href = '{{ url_for('login') }}';
+            } else {
+                alert("Erreur lors de la déconnexion.");
+            }
+        } catch (err) {
+            console.error('Erreur réseau :', err);
+        }
+    });
+</script>

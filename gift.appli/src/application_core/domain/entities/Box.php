@@ -13,7 +13,8 @@ class Box extends Model
 
     public function prestations(): BelongsToMany
     {
-        return $this->belongsToMany(Prestation::class, 'box2presta', 'box_id', 'presta_id');
+        return $this->belongsToMany(Prestation::class, 'box2presta', 'box_id', 'presta_id')
+                    ->withPivot('quantite');
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo {

@@ -24,7 +24,7 @@ class GetCoffretsTypeAction{
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($request, $e->getMessage());
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
         $view = \Slim\Views\Twig::fromRequest($request);
