@@ -1,6 +1,6 @@
 <?php
 
-namespace webui\providers;
+namespace gift\appli\webui\providers;
 
 interface CsrfTokenProviderInterface
 {
