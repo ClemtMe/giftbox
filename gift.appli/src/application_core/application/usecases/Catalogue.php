@@ -138,4 +138,20 @@ class Catalogue implements CatalogueInterface
         }
         return $coffrets->toArray();
     }
+
+    /**
+     * @throws EntityNotFoundException
+     * @throws ExceptionDatabase
+     */
+    public function getPrestations(): array
+    {
+        try {
+            $prestations = Prestation::all();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw new EntityNotFoundException("Table Prestation introuvable");
+        } catch (QueryException $e) {
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        }
+        return $prestations->toArray();
+    }
 }
