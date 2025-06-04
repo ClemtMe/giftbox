@@ -8,9 +8,10 @@ use gift\appli\core\application\exceptions\AuthentificationException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use Slim\Exception\HttpInternalServerErrorException;
 
-class AuthProvider implements AuthProviderInterface
+class SessionAuthProvider implements AuthProviderInterface
 {
     private AuthServiceInterface $authService;
+    private String $sessionKey = 'auth_user';
 
     public function __construct(){
         $this->authService = new AuthService();
@@ -23,7 +24,7 @@ class AuthProvider implements AuthProviderInterface
     public function register(string $username, string $password): void
     {
         $id = $this->authService->register($username, $password);
-        $_SESSION['user'] = $id;
+        $_SESSION[$this->sessionKey] = $this->authService->getUserById($id);
     }
 
     /**
@@ -33,7 +34,7 @@ class AuthProvider implements AuthProviderInterface
     public function loginByCredential(string $username, string $password): void
     {
         $id = $this->authService->loginByCredential($username, $password);
-        $_SESSION['user'] = $id;
+        $_SESSION[$this->sessionKey] = $this->authService->getUserById($id);
     }
 
     /**
@@ -41,10 +42,10 @@ class AuthProvider implements AuthProviderInterface
      */
     public function getSignedInUser(): array
     {
-        if (!isset($_SESSION['user'])) {
+        if (!isset($_SESSION[$this->sessionKey])) {
             return [];
         }
 
-        return $this->authService->getUserById($_SESSION['user']);
+        return $_SESSION[$this->sessionKey];
     }
 }

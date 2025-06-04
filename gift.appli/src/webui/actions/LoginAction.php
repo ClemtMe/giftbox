@@ -4,8 +4,8 @@ namespace gift\appli\webui\actions;
 
 use gift\appli\core\application\exceptions\AuthentificationException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
-use gift\appli\webui\providers\AuthProvider;
 use gift\appli\webui\providers\AuthProviderInterface;
+use gift\appli\webui\providers\SessionAuthProvider;
 use Slim\Routing\RouteContext;
 
 class LoginAction
@@ -16,7 +16,7 @@ class LoginAction
     public function __construct()
     {
         $this->template = 'pages/ViewLogin.twig';
-        $this->authProvider = new AuthProvider();
+        $this->authProvider = new SessionAuthProvider();
     }
 
     public function __invoke($request, $response, $args)
