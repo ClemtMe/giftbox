@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\providers;
 
-use gift\appli\webui\exceptions\CsrfException;
+use webui\exceptions\CsrfException;
 use webui\providers\CsrfTokenProviderInterface;
 
 class SessionCsrfTokenProvider implements CsrfTokenProviderInterface{
