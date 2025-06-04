@@ -1,7 +1,7 @@
 <?php
 
 namespace gift\appli\webui\middleware;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use gift\appli\webui\providers\AuthProviderInterface;
 use gift\appli\webui\providers\SessionAuthProvider;
 use Psr\Http\Message\ResponseInterface;
@@ -24,10 +24,10 @@ class TwigGlobalUserMiddleware
     {
         try {
             $user = $this->authProvider->getSignedInUser();
-            if($user !== []) {
-                $this->twig->getEnvironment()->addGlobal('userSession', $user);
-            }
-        } catch (ExceptionDatabase $e) {}
+        } catch (ProviderAuthentificationException $e) {
+            return $handler->handle($request);
+        }
+        $this->twig->getEnvironment()->addGlobal('userSession', $user);
         return $handler->handle($request);
     }
 }

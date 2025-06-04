@@ -32,7 +32,7 @@ class GetCategorieAction
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($request, $e->getMessage());
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
 

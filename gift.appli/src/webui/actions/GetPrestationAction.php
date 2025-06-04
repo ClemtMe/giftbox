@@ -35,14 +35,14 @@ class GetPrestationAction
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($rq, $e->getMessage());
+            throw new \Slim\Exception\HttpInternalServerErrorException($rq, $e->getMessage());
         }
 
         if (isset($_SESSION['box'])) {
             try {
                 $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']);
             } catch (ExceptionDatabase $e) {
-                throw new HttpInternalServiceException($rq, "Erreur de base de données : " . $e->getMessage());
+                throw new \Slim\Exception\HttpInternalServerErrorException($rq, "Erreur de base de données : " . $e->getMessage());
             } catch (EntityNotFoundException $e) {
                 throw new HttpNotFoundException($rq, "Entité non trouvée : " . $e->getMessage());
             }

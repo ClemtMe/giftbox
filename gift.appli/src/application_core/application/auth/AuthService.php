@@ -70,6 +70,7 @@ class AuthService implements AuthServiceInterface
             return [
                 'id' => $user->id,
                 'username' => $user->user_id,
+                'role' => $user->role
             ];
         } catch (\Illuminate\Database\QueryException $e) {
             throw new ExceptionDatabase('Erreur de base de donnée: ' . $e->getMessage());

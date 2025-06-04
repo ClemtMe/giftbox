@@ -9,7 +9,7 @@ interface AuthorizationServiceInterface
     const PERMISSION_READ_BOX = 'read_box';
 
 
-    public function isAuthorized(string $userId, string $action, string $resourceId=null): bool;
+    public function isAuthorized(string $userId, string $action, ?string $resourceId=null): bool;
     public function isBoxOwner(string $userId, string $boxId): bool;
     public function isAdmin(string $userId): bool;
 }

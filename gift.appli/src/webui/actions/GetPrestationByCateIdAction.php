@@ -29,9 +29,9 @@ class GetPrestationByCateIdAction{
             $categorie = $this->catalogue->getCategorieById($id);
             $prestations = $this->catalogue->getPrestationsByCategorie($id);
         } catch (EntityNotFoundException $e) {
-            throw new HttpNotFoundException($request, $e->getMessage());
+            throw new \Slim\Exception\HttpNotFoundException($request, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($request, $e->getMessage());
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();

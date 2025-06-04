@@ -13,17 +13,17 @@ class AuthorizationService implements AuthorizationServiceInterface
      * @throws ExceptionDatabase
      * @throws EntityNotFoundException
      */
-    public function isAuthorized(string $userId, string $action, string $resourceId = null): bool
+    public function isAuthorized(string $userId, string $action, ?string $resourceId = null): bool
     {
         $user = (new AuthService())->getUserById($userId);
-        if ($user->role >= 100) {
+        if ($user['role'] >= 100) {
             return true;
         }
 
         switch ($action) {
             case AuthorizationServiceInterface::PERMISSION_READ_BOX:
             case AuthorizationServiceInterface::PERMISSION_CREATE_BOX:
-                return $user->role >= 1;
+                return $user['role'] >= 1;
             case AuthorizationServiceInterface::PERMISSION_UPDATE_BOX:
                 if ($resourceId === null) {
                     return false;
@@ -40,7 +40,7 @@ class AuthorizationService implements AuthorizationServiceInterface
     public function isAdmin(string $userId): bool
     {
         $user = (new AuthService())->getUserById($userId);
-        if($user->role >= 100){
+        if($user['role'] >= 100){
             return true;
         }
         return false;
@@ -53,7 +53,7 @@ class AuthorizationService implements AuthorizationServiceInterface
     public function isBoxOwner(string $userId, string $boxId): bool
     {
         $user = (new AuthService())->getUserById($userId);
-        if ($user->role >= 100) {
+        if ($user['role'] >= 100) {
             return true;
         }
 

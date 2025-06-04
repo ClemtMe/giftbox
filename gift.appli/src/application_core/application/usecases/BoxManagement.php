@@ -2,6 +2,9 @@
 
 namespace gift\appli\core\application\usecases;
 
+use gift\appli\core\application\authorization\AuthorizationService;
+use gift\appli\core\application\authorization\AuthorizationServiceInterface;
+use gift\appli\core\application\exceptions\AuthorizationException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
@@ -11,6 +14,13 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class BoxManagement implements BoxManagementInterface
 {
+
+    private AuthorizationServiceInterface $authorizationService;
+
+    public function __construct()
+    {
+        $this->authorizationService = new AuthorizationService();
+    }
 
     /**
      * @throws EntityNotFoundException
@@ -64,10 +74,18 @@ class BoxManagement implements BoxManagementInterface
         }
     }
 
+    /**
+     * @throws AuthorizationException
+     * @throws ExceptionDatabase
+     * @throws EntityNotFoundException
+     */
     public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): bool
     {
         if($quantity < 0) {
             return false;
+        }
+        if($this->authorizationService->isAuthorized($userId, AuthorizationServiceInterface::PERMISSION_UPDATE_BOX, $boxId) === false) {
+            throw new AuthorizationException("Vous n'avez pas les droits pour modifier cette box");
         }
         try {
             $box = Box::findOrFail($boxId);

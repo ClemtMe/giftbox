@@ -52,10 +52,13 @@ class SessionAuthProvider implements AuthProviderInterface
         }
     }
 
+    /**
+     * @throws ProviderAuthentificationException
+     */
     public function getSignedInUser(): array
     {
         if (!isset($_SESSION[$this->sessionKey])) {
-            return [];
+            throw new ProviderAuthentificationException("Aucun utilisateur connecté.");
         }
 
         return $_SESSION[$this->sessionKey];
