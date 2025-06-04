@@ -2,11 +2,12 @@
 
 namespace gift\appli\webui\actions;
 
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Exception\HttpNotFoundException;
 
 class GetCategorieAction
@@ -32,7 +33,7 @@ class GetCategorieAction
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
+            throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
 
 

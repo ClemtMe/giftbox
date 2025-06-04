@@ -1,6 +1,6 @@
 <?php
 
-namespace gift\appli\core\domain\exceptions;
+namespace gift\appli\core\application\exceptions;
 
 class EntityNotFoundException extends \Exception
 {
