@@ -10,6 +10,7 @@ interface BoxManagementInterface
     public function validateBox(string $userId, string $boxId): bool;
     public function deleteBox(string $userId, string $boxId): bool;
     public function getQtyPrestation(string $prestationId, string $boxId): int;
+    public function getBoxesByUserId(string $userId): array;
     public function getBoxByIdSessionFormat(string $boxId): array;
 
 }

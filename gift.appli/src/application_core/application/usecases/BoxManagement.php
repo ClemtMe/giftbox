@@ -205,4 +205,25 @@ class BoxManagement implements BoxManagementInterface
         }
         return $box;
     }
+
+    /**
+     * @throws ExceptionDatabase
+     */
+    public function getBoxesByUserId(string $userId): array
+    {
+        try {
+            $boxes = Box::where('createur_id', $userId)->get();
+            return $boxes->map(function ($box) {
+                return [
+                    'id' => $box->id,
+                    'libelle' => $box->libelle,
+                    'description' => $box->description,
+                    'montant' => $box->montant,
+                    'statut' => $box->statut,
+                ];
+            })->toArray();
+        } catch (\Illuminate\Database\QueryException $e) {
+            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+        }
+    }
 }

@@ -9,6 +9,7 @@ use gift\appli\webui\actions\GetCoffretTypeAction;
 use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
+use gift\appli\webui\actions\GetUserBoxesAction;
 use gift\appli\webui\actions\LoginAction;
 use gift\appli\webui\actions\LogoutAction;
 use gift\appli\webui\actions\RegisterAction;
@@ -51,6 +52,13 @@ return function (Slim\App $app) {
     $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
 
     $app->get('/box/create', CreationBoxAction::class)->setName('create');
+
+    $app->get('/mesBoxes[/]', GetUserBoxesAction::class)->setName('mes_boxes');
+
+    $app->post('/box/validate[/]', function ($request, $response) {})->setName('box_validate');
+
+    $app->post('/box/delete[/]', function ($request, $response) {})->setName('box_delete');
+
 
     return $app;
 };
