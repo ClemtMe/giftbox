@@ -1,7 +1,7 @@
 <?php
 
-use gift\appli\api\Categories;
-use gift\appli\api\Boxes;
+use gift\appli\api\CategoriesAction;
+use gift\appli\api\BoxesAction;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -23,7 +23,7 @@ return function (Slim\App $app) {
     $app->get('/categories[/]', GetCategoriesAction::class)->setName('categories');
 
     // Une catégories selon un ID
-    $app->get('/categorie[/[{id}[/]]]', GetCategorieAction::class)->setName('categorie');
+    $app->get('/categorie/{id}[/]', GetCategorieAction::class)->setName('categorie');
 
     // Une préstation selon un ID passé dans la query string
     $app->get('/prestation[/]', GetPrestationAction::class)->setName('prestation');
@@ -33,15 +33,15 @@ return function (Slim\App $app) {
 
     $app->get('/coffretsType[/]', GetCoffretsTypeAction::class)->setName('coffrets_type');
 
-    $app->get('/coffretType[/[{id}[/]]]', GetCoffretTypeAction::class)->setName('coffret_type');
+    $app->get('/coffretType/{id}[/]', GetCoffretTypeAction::class)->setName('coffret_type');
 
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
 
     // API de toutes les catégories
-    $app->get('/api/categories[/]', Categories::class)->setName('api_categories');
+    $app->get('/api/categories[/[{id}[/]]]', CategoriesAction::class)->setName('api_categories');
 
     // API de croffrets-types avec option d'en chercher un par id
-    $app->get('api/boxes[/[{id}[/]]]', Boxes::class)->setName('api_boxes');
+    $app->get('/api/boxes[/[{id}[/]]]', BoxesAction::class)->setName('api_boxes');
 
     return $app;
 };
