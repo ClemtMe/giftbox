@@ -13,24 +13,25 @@ class AuthorizationService implements AuthorizationServiceInterface
      * @throws ExceptionDatabase
      * @throws EntityNotFoundException
      */
-    public function isAuthorized(string $userId, string $action, string $resource, string $resourceId = null): bool
+    public function isAuthorized(string $userId, string $action, string $resourceId = null): bool
     {
         $user = (new AuthService())->getUserById($userId);
         if ($user->role >= 100) {
             return true;
         }
 
-        if ($action === AuthorizationServiceInterface::PERMISSION_CREATE_BOX && $resource === 'create_box') {
-            return $user->role >= 1;
+        switch ($action) {
+            case AuthorizationServiceInterface::PERMISSION_READ_BOX:
+            case AuthorizationServiceInterface::PERMISSION_CREATE_BOX:
+                return $user->role >= 1;
+            case AuthorizationServiceInterface::PERMISSION_UPDATE_BOX:
+                if ($resourceId === null) {
+                    return false;
+                }
+                return $this->isBoxOwner($userId, $resourceId);
+            default:
+                return false;
         }
-        if ($action === AuthorizationServiceInterface::PERMISSION_UPDATE_BOX && $resource === 'update_box') {
-            return $this->isBoxOwner($userId, $resourceId);
-        }
-        if ($action === AuthorizationServiceInterface::PERMISSION_READ_BOX && $resource === 'read_box') {
-            return $user->role >= 1;
-        }
-
-        return false;
     }
 
     /**
