@@ -11,6 +11,7 @@ use gift\appli\webui\actions\GetCoffretTypeAction;
 use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
+use gift\appli\webui\actions\AccesBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -50,6 +51,8 @@ return function (Slim\App $app) {
 
     // API des préstations d'une categorie selon un ID
     $app->get('/api/categories/{id}/prestations[/]', PrestationsByCategorieAction::class)->setName('api_prestations_by_categorie');
+
+    $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
 
     return $app;
 };
