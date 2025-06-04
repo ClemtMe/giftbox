@@ -2,8 +2,9 @@
 declare(strict_types=1);
 session_start();
 
-use gift\appli\conf\middleware\TwigGlobalBoxMiddleware;
 use gift\appli\infrastructure\Eloquent;
+use gift\appli\webui\middleware\TwigGlobalBoxMiddleware;
+use gift\appli\webui\middleware\TwigGlobalUserMiddleware;
 use Slim\Factory\AppFactory;
 
 Eloquent::init(__DIR__ . '/gift.db.conf.ini.dist');
@@ -26,6 +27,7 @@ $twig->getEnvironment()
 );
 
 $app->add(new TwigGlobalBoxMiddleware($twig));
+$app->add(new TwigGlobalUserMiddleware($twig));
 $app->add(\Slim\Views\TwigMiddleware::create($app, $twig));
 
 $app = (require_once __DIR__ . '/routes.php')($app);

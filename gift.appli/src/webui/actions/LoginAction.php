@@ -2,8 +2,7 @@
 
 namespace gift\appli\webui\actions;
 
-use gift\appli\core\application\exceptions\AuthentificationException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use gift\appli\webui\providers\AuthProviderInterface;
 use gift\appli\webui\providers\SessionAuthProvider;
 use Slim\Routing\RouteContext;
@@ -30,16 +29,17 @@ class LoginAction
             // Authentifier l'utilisateur
             try {
                 $this->authProvider->loginByCredential($email, $password);
-            } catch (AuthentificationException $e) {
+            } catch (ProviderAuthentificationException $e) {
                 throw new \Slim\Exception\HttpUnauthorizedException($request,"Authentification échouée : " . $e->getMessage());
-            } catch (ExceptionDatabase $e) {
-                throw new \Slim\Exception\HttpInternalServerErrorException($request,"Erreur de base de donnée : " . $e->getMessage());
             }
 
-            if (isset($_SESSION['user'])) {
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+            if ($this->authProvider->getSignedInUser() !== []) {
                 // Authentification réussie, rediriger vers la page d'accueil
-                $routeParser = RouteContext::fromRequest($request)->getRouteParser();
                 return $response->withHeader('Location', $routeParser->urlFor('home'))->withStatus(302);
+            }else{
+                // Authentification échouée, rediriger vers la page de connexion
+                return $response->withHeader('Location', $routeParser->urlFor('login'))->withStatus(302);
             }
 
         } else {

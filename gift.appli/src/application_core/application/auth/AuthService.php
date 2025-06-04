@@ -67,7 +67,10 @@ class AuthService implements AuthServiceInterface
             if ($user === null) {
                 throw new ExceptionDatabase('Utilisateur non trouvé');
             }
-            return $user->toArray();
+            return [
+                'id' => $user->id,
+                'username' => $user->user_id,
+            ];
         } catch (\Illuminate\Database\QueryException $e) {
             throw new ExceptionDatabase('Erreur de base de donnée: ' . $e->getMessage());
         }

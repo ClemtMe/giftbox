@@ -1,5 +1,7 @@
 <?php
 
+use gift\appli\webui\actions\AccesBoxAction;
+use gift\appli\webui\actions\CreationBoxAction;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -8,10 +10,9 @@ use gift\appli\webui\actions\GetPrestationAction;
 use gift\appli\webui\actions\GetPrestationByCateIdAction;
 use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
 use gift\appli\webui\actions\LoginAction;
+use gift\appli\webui\actions\LogoutAction;
 use gift\appli\webui\actions\RegisterAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
-use gift\appli\webui\actions\AccesBoxAction;
-use gift\appli\webui\actions\CreationBoxAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -22,8 +23,9 @@ return function (Slim\App $app) {
         return $view->render($response, 'pages/ViewAccueil.twig');
     })->setName('home');
 
-    $app->map(['GET', 'POST'], '/login', LoginAction::class)->setName('login');
-    $app->map(['GET', 'POST'], '/register', RegisterAction::class)->setName('register');
+    $app->map(['GET', 'POST'], '/login[/]', LoginAction::class)->setName('login');
+    $app->map(['GET', 'POST'], '/register[/]', RegisterAction::class)->setName('register');
+    $app->post('/logout[/]',  LogoutAction::class)->setName('logout');
 
     // Toutes les catégories
     $app->get('/categories[/]', GetCategoriesAction::class)->setName('categories');

@@ -1,6 +1,6 @@
 <?php
 
-namespace gift\appli\conf\middleware;
+namespace gift\appli\webui\middleware;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\BoxManagementInterface;
 use Psr\Http\Message\ResponseInterface;

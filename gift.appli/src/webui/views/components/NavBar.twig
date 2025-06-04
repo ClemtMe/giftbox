@@ -5,11 +5,24 @@
             <li class="hover:text-blue-500"><a href="{{ url_for('categories') }}">Catégories</a></li>
             <li class="hover:text-blue-500"><a href="{{ url_for('coffrets_type') }}">Coffrets</a></li>
         </ul>
-        <!-- Bouton hamburger -->
-        <button id="toggleDrawer" class="text-gray-700 focus:outline-none">
-            <!-- Icône panier -->
-            <i class="fa fa-gift fa-2x"></i>
-        </button>
+        <div class="flex items-center space-x-4">
+            <!-- Menu Profil -->
+            <div class="relative">
+                <button id="profileMenuButton" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500 focus:outline-none">
+                    <i class="fa fa-user-circle fa-2x"></i>
+                </button>
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden z-10">
+                    <p class="block px-4 py-2 bg-blue-500 text-black">{% if userSession is defined %}{{ userSession.username }}{% else %}Non connecté{% endif %}</p>
+                    <a href="/commandes" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">Mes boxes</a>
+                    <button id="deco" class="block px-4 py-2 w-full text-left hover:bg-gray-100 text-gray-700">Déconnexion</button>
+                </div>
+            </div>
+
+            <!-- Bouton box -->
+            <button id="toggleDrawer" class="text-gray-700 focus:outline-none hover:text-blue-500">
+                <i class="fa fa-gift fa-2x"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -80,7 +93,7 @@
     }
 </style>
 
-<!-- JavaScript -->
+<!-- JavaScript pour la box -->
 <script>
     const drawer = document.getElementById('drawer');
     const overlay = document.getElementById('overlay');
@@ -100,5 +113,39 @@
     overlay.addEventListener('click', () => {
         drawer.classList.add('translate-x-full');
         overlay.classList.add('hidden');
+    });
+</script>
+
+<!-- JavaScript pour le user -->
+<script>
+    const profileBtn = document.getElementById('profileMenuButton');
+    const dropdown = document.getElementById('profileDropdown');
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('deco').addEventListener('click', async () => {
+        try {
+            const response = await fetch('{{ url_for('logout') }}', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                window.location.href = '{{ url_for('login') }}';
+            } else {
+                alert("Erreur lors de la déconnexion.");
+            }
+        } catch (err) {
+            console.error('Erreur réseau :', err);
+        }
     });
 </script>
