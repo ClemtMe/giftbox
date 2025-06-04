@@ -2,10 +2,10 @@
 
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\AuthorizationException;
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\Catalogue;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use gift\appli\webui\providers\AuthProviderInterface;
 use gift\appli\webui\providers\SessionAuthProvider;

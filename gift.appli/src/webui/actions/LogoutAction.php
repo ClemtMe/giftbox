@@ -24,6 +24,10 @@ class LogoutAction
             throw new \Slim\Exception\HttpUnauthorizedException($request, "Authentification échouée : " . $e->getMessage());
         }
 
+        // Détruire la session pour se déconnecter
+        session_destroy();
+
+
         // Rediriger vers la page de connexion
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         return $response->withHeader('Location', $routeParser->urlFor('login'))->withStatus(302);

@@ -13,6 +13,7 @@ use gift\appli\webui\actions\GetPrestationByCoffretIdAction;
 use gift\appli\webui\actions\GetUserBoxesAction;
 use gift\appli\webui\actions\LoginAction;
 use gift\appli\webui\actions\LogoutAction;
+use gift\appli\webui\actions\ModifBoxAction;
 use gift\appli\webui\actions\RegisterAction;
 use gift\appli\webui\actions\SetPresta2BoxAction;
 use gift\appli\webui\actions\ValidateBoxAction;
@@ -56,6 +57,8 @@ return function (Slim\App $app) {
     $app->get('/box/create', CreationBoxAction::class)->setName('create');
 
     $app->get('/mesBoxes[/]', GetUserBoxesAction::class)->setName('mes_boxes');
+
+    $app->post('/box/modif[/]', ModifBoxAction::class)->setName('box_modif');
 
     $app->post('/box/validate[/]', ValidateBoxAction::class)->setName('box_validate');
 

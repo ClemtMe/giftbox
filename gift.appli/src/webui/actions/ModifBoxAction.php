@@ -1,13 +1,10 @@
 <?php
 
 namespace gift\appli\webui\actions;
-use gift\appli\core\application\exceptions\AuthorizationException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\BoxManagementInterface;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use gift\appli\webui\exceptions\CsrfException;
-use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use gift\appli\webui\providers\AuthProviderInterface;
 use gift\appli\webui\providers\CsrfTokenProviderInterface;
 use gift\appli\webui\providers\SessionAuthProvider;
@@ -17,7 +14,7 @@ use Slim\Exception\HttpForbiddenException;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 
-class ValidateBoxAction
+class ModifBoxAction
 {
     private BoxManagementInterface $bm;
     private CsrfTokenProviderInterface $csrfTokenProvider;
@@ -48,23 +45,9 @@ class ValidateBoxAction
             throw new \Slim\Exception\HttpBadRequestException($request, "Token CSRF invalide.");
         }
 
-        try {
-            $userId = $this->auth->getSignedInUser()['id'];
-        } catch (ProviderAuthentificationException $e) {
-            throw new \Slim\Exception\HttpUnauthorizedException($request, "Authentification échouée : " . $e->getMessage());
-        }
-
-        try {
-            if($this->bm->validateBox($userId, $boxId)) {
-                unset($_SESSION['box']);
-            }
-        } catch (AuthorizationException $e) {
-            throw new HttpForbiddenException($request, "Vous n'êtes pas autorisé à supprimer cette box : " . $e->getMessage());
-        } catch (ExceptionDatabase | \gift\appli\core\application\exceptions\EntityNotFoundException $e) {
-            throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur de base de données : " . $e->getMessage());
-        }
+        $_SESSION['box'] = $boxId;
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        return $response->withHeader('Location', $routeParser->urlFor('mes_boxes'))->withStatus(302);
+        return $response->withHeader('Location', $routeParser->urlFor('home'))->withStatus(302);
     }
 }
