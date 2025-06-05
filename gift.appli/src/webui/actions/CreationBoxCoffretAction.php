@@ -72,9 +72,6 @@ class CreationBoxCoffretAction
                 throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur lors de la création de la box : " . $e->getMessage());
             }
 
-            // Ajouter un message flash de succès
-            $request = $request->withAttribute('flash_message', 'Box créée avec succès !');
-
             $_SESSION['box'] = $boxid;
 
             // Rediriger vers la page d'accueil
