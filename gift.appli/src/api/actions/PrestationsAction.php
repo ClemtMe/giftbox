@@ -27,7 +27,7 @@ class PrestationsAction {
             //Transformation des données
             $data = [ 'type' => 'collection',
                 'count' => count($prestations),
-                'categories' => $prestations ];
+                'prestations' => $prestations ];
             $response->getBody()->write(json_encode($data));
 
         } else{
@@ -40,7 +40,7 @@ class PrestationsAction {
 
             //Transformation des données
             $data = [ 'type' => 'ressource',
-                'categories' => $prestation ];
+                'prestation' => $prestation ];
             $response->getBody()->write(json_encode($data));
         }
 
