@@ -24,14 +24,16 @@ class PrestationsByCategorieAction {
         //On tente de récupérer les catégories depuis le modèle
         try {
             $prestationsByCateg = $this->catalogue->getPrestationsByCategorie($id);
+            $categorie = $this->catalogue->getCategorieById($id);
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         }
 
         //Transformation des données
         $data = [ 'type' => 'collection',
+            'categorie' => $categorie,
             'count' => count($prestationsByCateg),
-            'categories' => $prestationsByCateg ];
+            'prestations' => $prestationsByCateg ];
         $response->getBody()->write(json_encode($data));
 
         //renvoie des données
