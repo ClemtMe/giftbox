@@ -27,7 +27,7 @@ class BoxesAction {
             //Transformation des données
             $data = [ 'type' => 'collection',
                 'count' => count($boxes),
-                'categories' => $boxes ];
+                'coffrets' => $boxes ];
             $response->getBody()->write(json_encode($data));
 
         } else{
@@ -40,7 +40,7 @@ class BoxesAction {
 
             //Transformation des données
             $data = [ 'type' => 'ressource',
-                'categories' => $box ];
+                'coffret' => $box ];
             $response->getBody()->write(json_encode($data));
         }
 
