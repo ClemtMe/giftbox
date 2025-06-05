@@ -150,7 +150,7 @@ class BoxManagement implements BoxManagementInterface
             }
             // Vérification que la box a au moins deux prestation
             if ($box->prestations->count() < 2) {
-                throw new AuthorizationException("La box doit contenir au moins deux prestations pour être validée");
+                throw new AuthorizationException("La box doit contenir au moins deux prestations différentes pour être validée");
             }
             $box->statut = 2;
             $box->save();

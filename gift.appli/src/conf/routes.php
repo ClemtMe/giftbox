@@ -4,6 +4,7 @@ use gift\appli\webui\actions\AccesBoxAction;
 use gift\appli\webui\actions\CreationBoxAction;
 use gift\appli\webui\actions\CreationBoxCoffretAction;
 use gift\appli\webui\actions\DeleteBoxAction;
+use gift\appli\webui\actions\GenererAccesBoxAction;
 use gift\appli\webui\actions\GetCategorieAction;
 use gift\appli\webui\actions\GetCategoriesAction;
 use gift\appli\webui\actions\GetCoffretsTypeAction;
@@ -54,6 +55,8 @@ return function (Slim\App $app) {
     $app->get('/coffretType/{id}/prestations[/]', GetPrestationByCoffretIdAction::class)->setName('prestations_by_coffret');
 
     $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
+
+    $app->post('/box/genereracces', GenererAccesBoxAction::class)->setName('generer_acces_box');
 
     $app->map(['GET', 'POST'], '/box/create', CreationBoxAction::class)->setName('create_box');
 

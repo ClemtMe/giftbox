@@ -12,17 +12,19 @@
                         <h2 class="text-lg font-semibold text-gray-800">{{ box.libelle }}</h2>
                         <p class="text-gray-600 text-sm">{{ box.description }}</p>
                         <p class="text-gray-800 text-sm"><strong>Montant:</strong> {{ box.montant }} €</p>
-                        <p class="text-sm text-gray-500"><strong>Statut:</strong>{% set label = {
-                            1: 'Créée',
-                            2: 'Validée',
-                            3: 'Livrée',
-                            4: 'Utilisée',
-                            5: 'Payée'
-                        }[box.statut]|default('Inconnu') %}
-                        {{ label }}</p>
+                        <p class="text-sm text-gray-500"><strong>Statut:</strong>
+                            {% set label = {
+                                1: 'Créée',
+                                2: 'Validée',
+                                3: 'Livrée',
+                                4: 'Utilisée',
+                                5: 'Payée'
+                            }[box.statut]|default('Inconnu') %}
+                            {{ label }}
+                        </p>
                     </div>
 
-                    <div class="mt-4 md:mt-0 flex space-x-3">
+                    <div class="mt-4 md:mt-0 flex flex-col items-start space-y-2 md:items-end md:space-y-0 md:flex-row md:space-x-3">
                         <form method="POST" action="{{ url_for('box_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette box ?');">
                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">
                                 Supprimer
@@ -46,6 +48,15 @@
                                 </button>
                                 <input type="hidden" name="box_id" value="{{ box.id }}">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            </form>
+                        {% endif %}
+                        {% if box.statut is same as(2) %}
+                            <form method="POST" action="{{ url_for('generer_acces_box') }}" class="mt-2 md:mt-2">
+                                <input type="hidden" name="box_id" value="{{ box.id }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button type="submit" class="text-blue-600 hover:underline text-sm p-0 bg-transparent">
+                                    Générer le lien d'utilisation
+                                </button>
                             </form>
                         {% endif %}
                     </div>

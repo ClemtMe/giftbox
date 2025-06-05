@@ -59,7 +59,7 @@ class ValidateBoxAction
                 unset($_SESSION['box']);
             }
         } catch (AuthorizationException $e) {
-            throw new HttpForbiddenException($request, "Vous n'êtes pas autorisé à supprimer cette box : " . $e->getMessage());
+            throw new HttpForbiddenException($request, "Vous n'êtes pas autorisé à valider cette box : " . $e->getMessage());
         } catch (ExceptionDatabase | \gift\appli\core\application\exceptions\EntityNotFoundException $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur de base de données : " . $e->getMessage());
         }
