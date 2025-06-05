@@ -39,7 +39,7 @@ class CategoriesAction {
 
             //Transformation des données
             $data = [ 'type' => 'ressource',
-                'categories' => $categorie ];
+                'categorie' => $categorie ];
             $response->getBody()->write(json_encode($data));
         }
 
