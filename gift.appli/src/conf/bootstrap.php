@@ -10,10 +10,10 @@ use Slim\Factory\AppFactory;
 Eloquent::init(__DIR__ . '/gift.db.conf.ini.dist');
 
 $app = AppFactory::create();
-$app->addRoutingMiddleware(true, false, false);
+$app->addRoutingMiddleware(false, false, false);
 $app->addBodyParsingMiddleware();
-$app->addErrorMiddleware(true, false, false);
-$app->setBasePath('/giftbox');
+$app->addErrorMiddleware(false, false, false);
+$app->setBasePath('');
 
 $twig = \Slim\Views\Twig::create(__DIR__ . '/../webui/views', ['cache' => false, 'auto_reload' => true , 'strict_variables' => true]);
 $twig->getEnvironment()
