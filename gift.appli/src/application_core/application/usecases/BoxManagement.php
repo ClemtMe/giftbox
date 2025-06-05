@@ -11,6 +11,7 @@ use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\User;
 use Illuminate\Database\Capsule\Manager as DB;
+use Ramsey\Uuid\Uuid;
 
 class BoxManagement implements BoxManagementInterface
 {
@@ -30,7 +31,7 @@ class BoxManagement implements BoxManagementInterface
     {
         try {
             $box = new Box();
-            $box->id = uniqid('box_', true);
+            $box->id = Uuid::uuid4()->toString();
             $box->token = '';
             $box->libelle = $name;
             $box->description = $description;
@@ -55,20 +56,30 @@ class BoxManagement implements BoxManagementInterface
     public function createBoxCoffret(string $userId, string $name, string $description, bool $cadeau, int $coffretId, string $messageKdo = ''): string
     {
         try {
+            DB::beginTransaction();
             $box = new Box();
-            $box->name = $name;
+            $box->id = Uuid::uuid4()->toString();
+            $box->token = '';
+            $box->libelle = $name;
             $box->description = $description;
-            $box->cadeau = $cadeau;
-            $box->messageKdo = $messageKdo;
+            $box->kdo = $cadeau;
+            $box->message_kdo = $messageKdo;
+            $box->statut = 1;
+            $box->save();
             $user = User::findOrFail($userId);
             $box->user()->associate($user);
             $coffret = CoffretType::findOrFail($coffretId);
-            $prestationIds = $coffret->prestations()->pluck('prestations.id')->toArray();
-            $box->prestations()->attach($prestationIds);
+            $prestationIds = $coffret->prestations()->pluck('id')->toArray();
+            $data = [];
+            foreach ($prestationIds as $id) {
+                $data[$id] = ['quantite' => 1];
+            }
+            $box->prestations()->attach($data);
             $box->montant = $box->prestations->sum(function ($prestation) {
-                return $prestation->tarif * $prestation->pivot->quantity;
+                return $prestation->tarif * $prestation->pivot->quantite;
             });
             $box->save();
+            DB::commit();
             return $box->id;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
@@ -109,7 +120,7 @@ class BoxManagement implements BoxManagementInterface
                 $box->prestations()->detach($prestationId);
             }
             $box->montant = $box->prestations->sum(function ($prestation) {
-                return $prestation->tarif * $prestation->pivot->quantity;
+                return $prestation->tarif * $prestation->pivot->quantite;
             });
             $box->save();
             DB::commit();

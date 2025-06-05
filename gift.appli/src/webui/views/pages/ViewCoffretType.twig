@@ -6,4 +6,5 @@
     <h1 class="text-3xl font-bold text-center uppercase">le Coffret type {{ libelle }}</h1>
     <p class="text-2xl text-center">{{ description }}</p>
     <a class="hover:text-blue-500" href="{{ url_for('prestations_by_coffret', {'id': id}) }}">Prestations</a>
+    <a class="hover:text-blue-500" href="{{ url_for('create_box_coffret') }}?id={{ id }}">Creer une box ?</a>
 {% endblock %}

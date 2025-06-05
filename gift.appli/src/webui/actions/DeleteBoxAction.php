@@ -62,6 +62,8 @@ class DeleteBoxAction
             throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur de base de données : " . $e->getMessage());
         }
 
+        unset($_SESSION['box']);
+
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         return $response->withHeader('Location', $routeParser->urlFor('mes_boxes'))->withStatus(302);
     }
