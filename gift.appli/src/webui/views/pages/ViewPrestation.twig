@@ -1,14 +1,41 @@
 {% extends 'Base.twig' %}
 
-{% block title %}La Prestation {{ libelle }}{% endblock %}
+{% block title %}La Prestation {{ prestation.libelle }}{% endblock %}
 
 {% block content %}
     <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 space-y-4">
-        <h1 class="text-2xl font-bold text-gray-800">Prestation : {{ libelle }}</h1>
-        <p class="text-gray-700"><span class="font-semibold">Description :</span> {{ description }}</p>
-        <p class="text-gray-700"><span class="font-semibold">Composition :</span> {{ unite }}</p>
-        <a href="{{ url }}" class="text-blue-600 hover:underline break-words">{{ url }}</a>
-        <p class="text-gray-900 font-semibold">Prix : {{ tarif }}€</p>
-        <img src="/{{ globals.img_dir }}/{{ img }}" alt="{{ libelle }}" class="w-full rounded-md object-cover" />
+        <h1 class="text-2xl font-bold text-gray-800">Prestation : {{ prestation.libelle }}</h1>
+        <p class="text-gray-700"><span class="font-semibold">Description :</span> {{ prestation.description }}</p>
+        <p class="text-gray-700"><span class="font-semibold">Composition :</span> {{ prestation.unite }}</p>
+        <a href="{{ prestation.url }}" class="text-blue-600 hover:underline break-words">{{ prestation.url }}</a>
+        <p class="text-gray-900 font-semibold">Prix : {{ prestation.tarif }}€</p>
+        <img src="/{{ globals.img_dir }}/{{ prestation.img }}" alt="{{ prestation.libelle }}" class="w-full rounded-md object-cover" />
+
+        {% if quantity is defined %}
+            <form action="{{ url }}" method="POST" class="flex items-center justify-start gap-4 mt-4">
+                <span id="btn-moins" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">−</span>
+                <span id="quantite" class="text-lg font-semibold">{{ quantity }}</span>
+                <span id="btn-plus" class="bg-gray-200 hover:bg-gray-300 text-black px-3 py-1 rounded-full text-lg font-bold">+</span>
+                <input type="hidden" name="prestation_id" value="{{ prestation.id }}">
+                <input type="hidden" name="quantity" id="quantity-input" value="{{ quantity }}">
+                <button type="submit"><i class="fas fa-check" style="color: green;"></i></button>
+            </form>
+        {% endif %}
+
     </div>
+
+    <script>
+        let quantity = document.getElementById('quantite');
+        let quantityInput = document.getElementById('quantity-input');
+        document.getElementById('btn-plus').addEventListener('click', function() {
+            quantity.textContent = parseInt(quantity.textContent) + 1;
+            quantityInput.value = quantity.textContent;
+        });
+        document.getElementById('btn-moins').addEventListener('click', function() {
+            if (parseInt(quantity.textContent) > 0) {
+                quantity.textContent = parseInt(quantity.textContent) - 1;
+                quantityInput.value = quantity.textContent;
+            }
+        });
+    </script>
 {% endblock %}

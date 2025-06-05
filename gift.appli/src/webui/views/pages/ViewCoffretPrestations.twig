@@ -10,7 +10,7 @@
         <ul class="list-disc list-inside space-y-2">
             {% for prestation in prestations %}
                 <li>
-                    <a href="{{ url }}?id={{ prestation.id }}"><span class="font-bold text-gray-800">{{ prestation.libelle }}:</span></a>
+                    <a href="{{ url }}?id={{ prestation.id }}"><span class="font-bold text-gray-800 hover:text-blue-600">{{ prestation.libelle }}:</span></a>
                     <span class="text-gray-700">{{ prestation.description }}</span>
                 </li>
             {% endfor %}

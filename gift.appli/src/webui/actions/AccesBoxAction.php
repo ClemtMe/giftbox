@@ -4,11 +4,11 @@ namespace gift\appli\webui\actions;
 
 use gift\appli\core\domain\exceptions\InvalidTokenException;
 use gift\appli\core\domain\exceptions\TokenMissingException;
+use gift\appli\webui\exceptions\BoxAccesException;
 use gift\appli\webui\providers\BoxServiceProvider;
 use gift\appli\webui\providers\BoxServiceProviderInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use webui\exceptions\BoxAccesException;
 
 class AccesBoxAction
 {

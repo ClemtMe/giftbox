@@ -23,6 +23,7 @@ class BoxServiceProvider implements BoxServiceProviderInterface
      */
     public function getBoxByToken(string $token): array
     {
+        $token = urldecode($token);
         try {
             $box = $this->boxAcces->accesBoxByToken($token);
         } catch ( TokenMissingException | InvalidTokenException | EntityNotFoundException $e) {

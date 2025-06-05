@@ -2,10 +2,10 @@
 
 namespace gift\appli\webui\actions;
 
+use gift\appli\core\application\exceptions\EntityNotFoundException;
 use gift\appli\core\application\exceptions\ExceptionDatabase;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
-use gift\appli\core\domain\exceptions\EntityNotFoundException;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
@@ -32,7 +32,7 @@ class GetCoffretTypeAction
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         } catch (ExceptionDatabase $e) {
-            throw new HttpInternalServiceException($request, $e->getMessage());
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 
         $view = \Slim\Views\Twig::fromRequest($request);

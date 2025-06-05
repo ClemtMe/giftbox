@@ -5,5 +5,7 @@
 {% block content %}
     <h1 class="text-3xl font-bold text-center uppercase">{{ libelle }}</h1>
     <p class="text-2xl text-center">{{ description }}</p>
-    <a class="hover:text-blue-500" href="{{ url_for('prestations_by_categorie', {'id': id}) }}">Prestations associés</a>
+    <div class="flex justify-center space-x-4 mt-6">
+        <a class="inline-block px-6 py-3 bg-blue-600 text-white text-center font-semibold rounded-lg hover:bg-blue-700 transition" href="{{ url_for('prestations_by_categorie', {'id': id}) }}">Prestations associés</a>
+    </div>
 {% endblock %}

@@ -91,10 +91,6 @@ class BoxAcces implements BoxInterface
             throw new InvalidTokenException("Impossible d'associer un token à la box $boxid car son statut n'est pas 'Validée'.");
         }
 
-        if ($box->token !== null) {
-            throw new InvalidTokenException("La box $boxid a déjà un token associé.");
-        }
-
         DB::beginTransaction();
         $box->token = $token;
         $box->statut = 3;
