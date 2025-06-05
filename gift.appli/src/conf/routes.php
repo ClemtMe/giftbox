@@ -54,7 +54,7 @@ return function (Slim\App $app) {
 
     $app->get('/box/access', AccesBoxAction::class)->setName('access_box');
 
-    $app->get('/box/create', CreationBoxAction::class)->setName('create');
+    $app->map(['GET', 'POST'], '/box/create', CreationBoxAction::class)->setName('create_box');
 
     $app->get('/mesBoxes[/]', GetUserBoxesAction::class)->setName('mes_boxes');
 

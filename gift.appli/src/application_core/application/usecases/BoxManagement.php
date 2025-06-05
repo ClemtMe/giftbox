@@ -30,10 +30,13 @@ class BoxManagement implements BoxManagementInterface
     {
         try {
             $box = new Box();
+            $box->id = uniqid('box_', true);
+            $box->token = '';
             $box->libelle = $name;
             $box->description = $description;
             $box->kdo = $cadeau;
             $box->message_kdo = $messageKdo;
+            $box->statut = 1;
             $user = User::findOrFail($userId);
             $box->user()->associate($user);
             $box->save();
