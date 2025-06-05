@@ -19,6 +19,7 @@
       "gift\\appli\\core\\": "./application_core/",
       "gift\\appli\\infrastructure\\": "./infrastructure/",
       "gift\\appli\\conf\\": "./conf/"
+      "gift\\appli\\api\\": "./api/"
     }
 
   }
