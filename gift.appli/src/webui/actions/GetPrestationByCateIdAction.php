@@ -2,7 +2,7 @@
 namespace gift\appli\webui\actions;
 
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
 use Slim\Routing\RouteContext;
@@ -30,7 +30,7 @@ class GetPrestationByCateIdAction{
             $prestations = $this->catalogue->getPrestationsByCategorie($id);
         } catch (EntityNotFoundException $e) {
             throw new \Slim\Exception\HttpNotFoundException($request, $e->getMessage());
-        } catch (ExceptionDatabase $e) {
+        } catch (ExceptionInterne $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 

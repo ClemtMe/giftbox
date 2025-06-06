@@ -2,7 +2,7 @@
 
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\AuthorizationException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\BoxManagementInterface;
 use gift\appli\core\domain\exceptions\EntityNotFoundException;
@@ -60,7 +60,7 @@ class ValidateBoxAction
             }
         } catch (AuthorizationException $e) {
             throw new HttpForbiddenException($request, "Vous n'êtes pas autorisé à valider cette box : " . $e->getMessage());
-        } catch (ExceptionDatabase | \gift\appli\core\application\exceptions\EntityNotFoundException $e) {
+        } catch (ExceptionInterne | \gift\appli\core\application\exceptions\EntityNotFoundException $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur de base de données : " . $e->getMessage());
         }
 

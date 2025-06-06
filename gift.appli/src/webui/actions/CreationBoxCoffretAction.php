@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use gift\appli\webui\providers\AuthProviderInterface;
@@ -68,7 +68,7 @@ class CreationBoxCoffretAction
                 $boxid = $this->boxManagement->createBoxCoffret($user['id'], $boxName, $boxDescription, $isGift, $coffretId, $gift);
             } catch (EntityNotFoundException $e) {
                 throw new \Slim\Exception\HttpNotFoundException($request, "L'utilisateur n'a pas été trouvé.");
-            } catch (ExceptionDatabase $e) {
+            } catch (ExceptionInterne $e) {
                 throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur lors de la création de la box : " . $e->getMessage());
             }
 

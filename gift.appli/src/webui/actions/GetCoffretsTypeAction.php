@@ -2,7 +2,7 @@
 namespace gift\appli\webui\actions;
 
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
 use Slim\Exception\HttpNotFoundException;
@@ -23,7 +23,7 @@ class GetCoffretsTypeAction{
             $coffretsType = $this->catalogue->getCoffrets();
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
-        } catch (ExceptionDatabase $e) {
+        } catch (ExceptionInterne $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 

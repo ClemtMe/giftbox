@@ -6,7 +6,7 @@ use gift\appli\core\application\auth\AuthService;
 use gift\appli\core\application\auth\AuthServiceInterface;
 use gift\appli\core\application\exceptions\AuthentificationException;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\webui\exceptions\ProviderAuthentificationException;
 use Slim\Exception\HttpInternalServerErrorException;
 
@@ -26,12 +26,12 @@ class SessionAuthProvider implements AuthProviderInterface
     {
         try {
             $id = $this->authService->register($username, $password);
-        } catch (AuthentificationException | ExceptionDatabase $e) {
+        } catch (AuthentificationException | ExceptionInterne $e) {
             throw new ProviderAuthentificationException("Erreur d'authentification : " . $e->getMessage());
         }
         try {
             $_SESSION[$this->sessionKey] = $this->authService->getUserById($id);
-        } catch (ExceptionDatabase | EntityNotFoundException $e) {
+        } catch (ExceptionInterne | EntityNotFoundException $e) {
             throw new ProviderAuthentificationException("Erreur d'authentification : " . $e->getMessage());
         }
     }
@@ -43,12 +43,12 @@ class SessionAuthProvider implements AuthProviderInterface
     {
         try {
             $id = $this->authService->loginByCredential($username, $password);
-        } catch (AuthentificationException | ExceptionDatabase $e) {
+        } catch (AuthentificationException | ExceptionInterne $e) {
             throw new ProviderAuthentificationException("Erreur d'authentification : " . $e->getMessage());
         }
         try {
             $_SESSION[$this->sessionKey] = $this->authService->getUserById($id);
-        } catch (ExceptionDatabase | EntityNotFoundException $e) {
+        } catch (ExceptionInterne | EntityNotFoundException $e) {
             throw new ProviderAuthentificationException("Erreur d'authentification : " . $e->getMessage());
         }
     }

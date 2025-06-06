@@ -6,7 +6,7 @@ use gift\appli\core\application\authorization\AuthorizationService;
 use gift\appli\core\application\authorization\AuthorizationServiceInterface;
 use gift\appli\core\application\exceptions\AuthorizationException;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\domain\entities\Box;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\User;
@@ -25,7 +25,7 @@ class BoxManagement implements BoxManagementInterface
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function createEmptyBox(string $userId, string $name, string $description, bool $cadeau, string $messageKdo = ''): string
     {
@@ -45,13 +45,13 @@ class BoxManagement implements BoxManagementInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function createBoxCoffret(string $userId, string $name, string $description, bool $cadeau, int $coffretId, string $messageKdo = ''): string
     {
@@ -84,13 +84,13 @@ class BoxManagement implements BoxManagementInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 
     /**
      * @throws AuthorizationException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws EntityNotFoundException
      */
     public function updateBoxPrestation(string $userId, string $boxId, string $prestationId, int $quantity): bool
@@ -128,12 +128,12 @@ class BoxManagement implements BoxManagementInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws AuthorizationException
      * @throws EntityNotFoundException
      */
@@ -158,12 +158,12 @@ class BoxManagement implements BoxManagementInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws AuthorizationException
      * @throws EntityNotFoundException
      */
@@ -180,13 +180,13 @@ class BoxManagement implements BoxManagementInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         } catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getQtyPrestation(string $prestationId, string $boxId): int
     {
@@ -195,7 +195,7 @@ class BoxManagement implements BoxManagementInterface
             $prestation = $box->prestations()->where('presta_id', $prestationId)->first();
             $nb = $prestation ? (int) $prestation->pivot->quantite : 0;
         }catch (\Illuminate\Database\QueryException $e){
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table introuvable");
         }
@@ -228,7 +228,7 @@ class BoxManagement implements BoxManagementInterface
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getBoxesByUserId(string $userId): array
     {
@@ -244,7 +244,7 @@ class BoxManagement implements BoxManagementInterface
                 ];
             })->toArray();
         } catch (\Illuminate\Database\QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
     }
 }

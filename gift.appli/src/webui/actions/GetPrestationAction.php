@@ -1,7 +1,7 @@
 <?php
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\core\application\usecases\CatalogueInterface;
@@ -34,14 +34,14 @@ class GetPrestationAction
             $prestation = $this->catalogue->getPrestationById($id);
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
-        } catch (ExceptionDatabase $e) {
+        } catch (ExceptionInterne $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($rq, $e->getMessage());
         }
 
         if (isset($_SESSION['box'])) {
             try {
                 $qty = $this->bm->getQtyPrestation($id, $_SESSION['box']);
-            } catch (ExceptionDatabase $e) {
+            } catch (ExceptionInterne $e) {
                 throw new \Slim\Exception\HttpInternalServerErrorException($rq, "Erreur de base de données : " . $e->getMessage());
             } catch (EntityNotFoundException $e) {
                 throw new HttpNotFoundException($rq, "Entité non trouvée : " . $e->getMessage());

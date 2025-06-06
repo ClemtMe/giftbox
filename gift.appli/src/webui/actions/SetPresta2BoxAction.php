@@ -3,7 +3,7 @@
 namespace gift\appli\webui\actions;
 use gift\appli\core\application\exceptions\AuthorizationException;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\Catalogue;
 use gift\appli\webui\exceptions\ProviderAuthentificationException;
@@ -41,7 +41,7 @@ class SetPresta2BoxAction
             try {
                 $user = $this->auth->getSignedInUser();
                 $this->bm->updateBoxPrestation($this->auth->getSignedInUser()['id'], $_SESSION['box'], $presta_id, $quantite);
-            } catch (ExceptionDatabase $e) {
+            } catch (ExceptionInterne $e) {
                 throw new \Slim\Exception\HttpInternalServerErrorException($request, "Erreur de base de données : " . $e->getMessage());
             } catch (EntityNotFoundException $e) {
                 throw new HttpNotFoundException($request, "Entité non trouvée : " . $e->getMessage());
@@ -55,7 +55,7 @@ class SetPresta2BoxAction
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         try {
             $prestation = $this->catalogue->getPrestationById($presta_id);
-        } catch (ExceptionDatabase $e) {
+        } catch (ExceptionInterne $e) {
             throw new HttpInternalServiceException($request, "Erreur de base de données : " . $e->getMessage());
         } catch (EntityNotFoundException $e) {
             throw new HttpNotFoundException($request, "Entité non trouvée : " . $e->getMessage());

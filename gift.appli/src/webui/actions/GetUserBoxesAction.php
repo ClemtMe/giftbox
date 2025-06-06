@@ -2,7 +2,7 @@
 
 namespace gift\appli\webui\actions;
 
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\usecases\BoxManagement;
 use gift\appli\core\application\usecases\BoxManagementInterface;
 use gift\appli\webui\exceptions\ProviderAuthentificationException;
@@ -36,7 +36,7 @@ class GetUserBoxesAction
 
         try {
             $boxes = $this->boxManagement->getBoxesByUserId($userId);
-        } catch (ExceptionDatabase $e) {
+        } catch (ExceptionInterne $e) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, $e->getMessage());
         }
 

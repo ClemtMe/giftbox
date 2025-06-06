@@ -2,7 +2,7 @@
 
 namespace gift\appli\core\application\usecases;
 
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\application\exceptions\InvalidTokenException;
 use gift\appli\core\application\exceptions\TokenMissingException;
 use gift\appli\core\domain\entities\Box;
@@ -63,7 +63,7 @@ class BoxAcces implements BoxInterface
 
     /**
      * @throws TokenMissingException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws InvalidTokenException
      * @throws EntityNotFoundException
      */
@@ -84,7 +84,7 @@ class BoxAcces implements BoxInterface
         } catch (ModelNotFoundException $e) {
             throw new EntityNotFoundException("Box $boxid introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
 
         if ($box->statut !== 2) {

@@ -3,7 +3,7 @@ namespace gift\appli\core\application\usecases;
 
 use Couchbase\QueryException;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\domain\entities\Categorie;
 use gift\appli\core\domain\entities\CoffretType;
 use gift\appli\core\domain\entities\Prestation;
@@ -14,7 +14,7 @@ class Catalogue implements CatalogueInterface
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getCategories(): array{
         try {
@@ -22,14 +22,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table Categorie introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $categories->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getCategorieById(int $id): array
     {
@@ -38,14 +38,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Categorie $id introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $categorie->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getPrestationById(string $id): array
     {
@@ -54,14 +54,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Prestation $id introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $prestation->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getPrestationsByCategorie(int $categ_id): array
     {
@@ -70,14 +70,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Categorie $categ_id introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $categorie->prestations->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getPrestationsByCoffret(int $coffret_id): array
     {
@@ -86,14 +86,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Coffret $coffret_id introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $coffret->prestations->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getThemesCoffrets(): array
     {
@@ -102,14 +102,14 @@ class Catalogue implements CatalogueInterface
         } catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table Theme introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $themes->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getCoffretById(int $id): array
     {
@@ -118,14 +118,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Categorie $id introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $coffret->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getCoffrets(): array
     {
@@ -134,14 +134,14 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table Coffret introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $coffrets->toArray();
     }
 
     /**
      * @throws EntityNotFoundException
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      */
     public function getPrestations(): array
     {
@@ -150,7 +150,7 @@ class Catalogue implements CatalogueInterface
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             throw new EntityNotFoundException("Table Prestation introuvable");
         } catch (QueryException $e) {
-            throw new ExceptionDatabase("Erreur de requête : " . $e->getMessage());
+            throw new ExceptionInterne("Erreur de requête : " . $e->getMessage());
         }
         return $prestations->toArray();
     }

@@ -4,7 +4,7 @@ namespace gift\appli\core\application\auth;
 
 use gift\appli\core\application\exceptions\AuthentificationException;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\domain\entities\User;
 use Ramsey\Uuid\Uuid;
 
@@ -12,7 +12,7 @@ class AuthService implements AuthServiceInterface
 {
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws AuthentificationException
      */
     public function register(string $username, string $password): string
@@ -33,12 +33,12 @@ class AuthService implements AuthServiceInterface
             $user->save();
             return $user->id;
         } catch (\Illuminate\Database\QueryException $e) {
-            throw new ExceptionDatabase('Erreur de base de donnée: ' . $e->getMessage());
+            throw new ExceptionInterne('Erreur de base de donnée: ' . $e->getMessage());
         }
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws AuthentificationException
      */
     public function loginByCredential(string $username, string $password): string
@@ -47,19 +47,19 @@ class AuthService implements AuthServiceInterface
             $user = User::where('user_id', $username)
                 ->first();
             if($user === null) {
-                throw new ExceptionDatabase('Utilisateur non trouvé');
+                throw new ExceptionInterne('Utilisateur non trouvé');
             }
             if(!password_verify($password, $user->password)) {
                 throw new AuthentificationException('Mot de passe incorrect');
             }
             return $user->id;
         } catch (\Illuminate\Database\QueryException $e) {
-            throw new ExceptionDatabase('Erreur de base de donnée: ' . $e->getMessage());
+            throw new ExceptionInterne('Erreur de base de donnée: ' . $e->getMessage());
         }
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws EntityNotFoundException
      */
     public function getUserById(string $userId): array
@@ -75,7 +75,7 @@ class AuthService implements AuthServiceInterface
                 'role' => $user->role
             ];
         } catch (\Illuminate\Database\QueryException $e) {
-            throw new ExceptionDatabase('Erreur de base de donnée: ' . $e->getMessage());
+            throw new ExceptionInterne('Erreur de base de donnée: ' . $e->getMessage());
         }
     }
 }

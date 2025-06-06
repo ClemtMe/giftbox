@@ -4,13 +4,13 @@ namespace gift\appli\core\application\authorization;
 
 use gift\appli\core\application\auth\AuthService;
 use gift\appli\core\application\exceptions\EntityNotFoundException;
-use gift\appli\core\application\exceptions\ExceptionDatabase;
+use gift\appli\core\application\exceptions\ExceptionInterne;
 use gift\appli\core\domain\entities\Box;
 
 class AuthorizationService implements AuthorizationServiceInterface
 {
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws EntityNotFoundException
      */
     public function isAuthorized(string $userId, string $action, ?string $resourceId = null): bool
@@ -36,7 +36,7 @@ class AuthorizationService implements AuthorizationServiceInterface
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws EntityNotFoundException
      */
     public function isAdmin(string $userId): bool
@@ -49,7 +49,7 @@ class AuthorizationService implements AuthorizationServiceInterface
     }
 
     /**
-     * @throws ExceptionDatabase
+     * @throws ExceptionInterne
      * @throws EntityNotFoundException
      */
     public function isBoxOwner(string $userId, string $boxId): bool
